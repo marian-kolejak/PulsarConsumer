@@ -1,0 +1,471 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "investments",
+    "businessSubdomain": "corporateAction",
+    "topicVersion": "4",
+    "topicName": "*.investments.corporateAction.V4",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-08-05T23:27:11+00:00",
+    "eventNames": [
+      "CORPORATE_ACTION_CREATED",
+      "CORPORATE_ACTION_UPDATED",
+      "CORPORATE_ACTION_DELETED"
+    ],
+    "defaultEventName": "CORPORATE_ACTION_UPDATED",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "-"
+  },
+  "name": "CorporateAction",
+  "namespace": "com.rbinternational.rice.investments.corporateAction",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "CorporateActionMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.investments.corporateAction",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "CORPORATE_ACTION_CREATED",
+                "CORPORATE_ACTION_UPDATED",
+                "CORPORATE_ACTION_DELETED"
+              ],
+              "default": "CORPORATE_ACTION_UPDATED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "CorporateActionPayload",
+        "namespace": "com.rbinternational.rice.investments.corporateAction",
+        "fields": [
+          {
+            "type": "string",
+            "name": "custSecAcc",
+            "doc": "Unique ID of client's portfolio for which this corporate action is relevant."
+          },
+          {
+            "type": "string",
+            "name": "transactionID",
+            "doc": "Unique identifier of corporate action transaction in banking core system."
+          },
+          {
+            "type": "string",
+            "name": "iSIN",
+            "doc": "ISIN to which this event is related."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "secCcy",
+            "default": null,
+            "doc": "Currency of security to which this event is related."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "stockExch",
+            "default": null,
+            "doc": "Stock exchange on which this security is traded."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "securityId",
+            "default": null,
+            "doc": "Unique identifier of security in core systems of network bank."
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "Type",
+              "namespace": "com.rbinternational.rice.investments.corporateAction",
+              "symbols": [
+                "DVCA",
+                "CONV",
+                "DECR",
+                "REDM",
+                "INTR",
+                "LIQU",
+                "MRGR",
+                "RHTS",
+                "SOFF",
+                "DVSE",
+                "SPLF",
+                "MTNG",
+                "OTHR",
+                "__DEFAULT__"
+              ]
+            },
+            "name": "type",
+            "doc": "Identifies the type of corporate action for which this event was created."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "caCcy",
+            "default": null,
+            "doc": "Corporate action currency."
+          },
+          {
+            "type": {
+              "type": "int",
+              "logicalType": "date"
+            },
+            "name": "exDate",
+            "doc": "Ex-date for realization of corporate action."
+          },
+          {
+            "type": {
+              "type": "int",
+              "logicalType": "date"
+            },
+            "name": "valueDate",
+            "doc": "Value date for realization of corporate action."
+          },
+          {
+            "type": "double",
+            "name": "qualifyHolding",
+            "doc": "Amount from holding which is qualified for this corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "rate",
+            "default": null,
+            "doc": "Rate related to the underlying security."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "caGrossAmt",
+            "default": null,
+            "doc": "Gross amount of corporate action in currency of corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "srcTaxPct",
+            "default": null,
+            "doc": "Percental expression of tax for this corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "srcTaxAmt",
+            "default": null,
+            "doc": "Amount which was taxed for this corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "exchRateCA",
+            "default": null,
+            "doc": "FX rate for value of corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "exchRateFee",
+            "default": null,
+            "doc": "FX rate for fee from corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "commisionAmt",
+            "default": null,
+            "doc": "Bank commission for this corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "fgnChargesAmt",
+            "default": null,
+            "doc": "Foreign bank commission for this corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "double"
+            ],
+            "name": "caNetAmount",
+            "default": null,
+            "doc": "Net amount of corporate action."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "accountNo",
+            "default": null,
+            "doc": "Client's current account number in IBAN format."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "accountCcy",
+            "default": null,
+            "doc": "Client's current account's currency."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "narrative",
+            "default": null,
+            "doc": "Description of corporate action."
+          },
+          {
+            "type": {
+              "type": "array",
+              "default": null,
+              "items": {
+                "type": "record",
+                "name": "CaLegItem",
+                "namespace": "com.rbinternational.rice.investments.corporateAction",
+                "fields": [
+                  {
+                    "type": {
+                      "type": "enum",
+                      "default": "__DEFAULT__",
+                      "name": "SecChangeType",
+                      "namespace": "com.rbinternational.rice.investments.corporateAction",
+                      "symbols": [
+                        "DEBIT",
+                        "CREDIT",
+                        "__DEFAULT__"
+                      ]
+                    },
+                    "name": "secChangeType",
+                    "doc": "Information about type of position change. If securities are added or removed from portfolio."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "securityId",
+                    "default": null,
+                    "doc": "Network bank specific unique ID of security which shall be removed or added. In case of TBSK it's SMID (from Globus)."
+                  },
+                  {
+                    "type": "string",
+                    "name": "iSIN",
+                    "doc": "ISIN of security which shall be removed or added."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "secCcy",
+                    "default": null,
+                    "doc": "Currency of security which shall be removed or added."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "stockExch",
+                    "default": null,
+                    "doc": "Stock exchange on which is trading security which shall be removed or added."
+                  },
+                  {
+                    "type": {
+                      "type": "enum",
+                      "default": "__DEFAULT__",
+                      "name": "PriceTypeType2",
+                      "namespace": "com.rbinternational.rice.investments.corporateAction",
+                      "symbols": [
+                        "__DEFAULT__",
+                        "UNIT",
+                        "NOMINAL"
+                      ]
+                    },
+                    "name": "priceType",
+                    "doc": "PriceType UNIT  - price is defined in absolute value of particular currency (i.e. 56.78 USD), it is used for share type Securities. PriceType NOMINAL- price is defined in percentage (i.e. 99.95 %), it is used for bond type Securities."
+                  },
+                  {
+                    "type": "double",
+                    "name": "secNominal",
+                    "doc": "Nominal of securities which shall be removed or added."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "secRatio",
+                    "default": null,
+                    "doc": "Ratio of newly added security in relation to original security."
+                  }
+                ]
+              }
+            },
+            "name": "caLegs"
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "StatusType",
+              "namespace": "com.rbinternational.rice.investments.corporateAction",
+              "symbols": [
+                "__DEFAULT__",
+                "AUTHORIZED",
+                "CANCEL"
+              ]
+            },
+            "name": "status",
+            "doc": "Status of the CA transaction  (AUTHORIZED / CANCELLED)."
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}
