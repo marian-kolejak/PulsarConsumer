@@ -1,0 +1,408 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "investments",
+    "businessSubdomain": "trade",
+    "topicVersion": "2",
+    "topicName": "*.investments.trade.V2",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-07-22T10:12:26+00:00",
+    "eventNames": [
+      "INVESTMENT_TRADE_AUTHORIZED",
+      "INVESTMENT_TRADE_STORNO"
+    ],
+    "defaultEventName": "INVESTMENT_TRADE_AUTHORIZED",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "-"
+  },
+  "name": "Trade",
+  "namespace": "com.rbinternational.rice.investments.trade",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "TradeMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.investments.trade",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "INVESTMENT_TRADE_AUTHORIZED",
+                "INVESTMENT_TRADE_STORNO"
+              ],
+              "default": "INVESTMENT_TRADE_AUTHORIZED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "TradePayload",
+        "namespace": "com.rbinternational.rice.investments.trade",
+        "fields": [
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "orderID",
+            "default": null,
+            "doc": "Unique identifier for Trade Order as assigned by NWU"
+          },
+          {
+            "type": "string",
+            "name": "transactionID",
+            "doc": "Unique identifier for Transaction as assigned by NWU"
+          },
+          {
+            "type": "int",
+            "name": "recCurrNo",
+            "doc": "Record (transaction version) number"
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "StatusEnum",
+              "namespace": "com.rbinternational.rice.investments.trade",
+              "symbols": [
+                "__DEFAULT__",
+                "AUTHORIZED",
+                "CANCEL"
+              ]
+            },
+            "name": "status",
+            "doc": "Status of transaction"
+          },
+          {
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            },
+            "name": "lastChange",
+            "doc": "Transaction update Date Time"
+          },
+          {
+            "type": {
+              "type": "int",
+              "logicalType": "date"
+            },
+            "name": "tradeDate",
+            "doc": "Trade date"
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "time-millis"
+              }
+            ],
+            "name": "tradeTime",
+            "default": null,
+            "doc": "Trade time"
+          },
+          {
+            "type": {
+              "type": "int",
+              "logicalType": "date"
+            },
+            "name": "valueDate",
+            "doc": "Value date"
+          },
+          {
+            "type": "string",
+            "name": "isin",
+            "doc": "Security identifier"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "securityID",
+            "default": null,
+            "doc": "Internal Security ID"
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "PriceTypeType",
+              "namespace": "com.rbinternational.rice.investments.trade",
+              "symbols": [
+                "__DEFAULT__",
+                "UNIT",
+                "NOMINAL"
+              ]
+            },
+            "name": "priceType",
+            "doc": "PriceType UNIT  - price is defined in absolute value of particular currency (i.e. 56.78 USD), it is used for share type Securities. PriceType NOMINAL- price is defined in percentage (i.e. 99.95 %), it is used for bond type Securities."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "tradeCCY",
+            "default": null,
+            "doc": "Trade currency"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "stockExchange",
+            "default": null,
+            "doc": "Market (stock exchange) of transaction execution."
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "SideItem",
+                "namespace": "com.rbinternational.rice.investments.trade",
+                "fields": [
+                  {
+                    "type": "string",
+                    "name": "custSecAcc",
+                    "doc": "Portfolio ID"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "cuAccNo",
+                    "default": null,
+                    "doc": "Cash Account number"
+                  },
+                  {
+                    "type": "string",
+                    "name": "cuAccCCY",
+                    "doc": "Cash Account currency"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "__DEFAULT__",
+                        "name": "SideEnum",
+                        "namespace": "com.rbinternational.rice.investments.trade",
+                        "symbols": [
+                          "__DEFAULT__",
+                          "BUY",
+                          "SELL"
+                        ]
+                      }
+                    ],
+                    "name": "side",
+                    "default": null,
+                    "doc": "Trade direction"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "nominal",
+                    "default": null,
+                    "doc": "Number of shares / nominal"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "price",
+                    "default": null,
+                    "doc": "Trade price"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "cuIntrAmt",
+                    "default": null,
+                    "doc": "Accrued interest"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "cuGrossAccr",
+                    "default": null,
+                    "doc": "Gross trade amount"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "cuCommission",
+                    "default": null,
+                    "doc": "Trade Commission"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "cuTax",
+                    "default": null,
+                    "doc": "Transaction Tax (e.g. FTT)"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "cuFgnFee",
+                    "default": null,
+                    "doc": "Broker fee"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "cuFxTrade",
+                    "default": null,
+                    "doc": "FX rate for trade"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "cuFxFee",
+                    "default": null,
+                    "doc": "FX rate for fee"
+                  }
+                ]
+              }
+            },
+            "name": "sides",
+            "doc": "Transactions details"
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

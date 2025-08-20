@@ -1,0 +1,306 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "investments",
+    "businessSubdomain": "savingOrder",
+    "topicVersion": "1",
+    "topicName": "*.investments.savingOrder.V1",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-04-28T11:59:34+00:00",
+    "eventNames": [
+      "SAVING_ORDER_CREATED",
+      "OTHER"
+    ],
+    "defaultEventName": "OTHER",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "-"
+  },
+  "name": "SavingOrder",
+  "namespace": "com.rbinternational.rice.investments.savingOrder",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "SavingOrderMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.investments.savingOrder",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "SAVING_ORDER_CREATED",
+                "OTHER"
+              ],
+              "default": "OTHER"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "SavingOrderPayload",
+        "namespace": "com.rbinternational.rice.investments.savingOrder",
+        "fields": [
+          {
+            "type": "string",
+            "name": "groupId",
+            "doc": "Identifier for group of saving order events as assigned by NWU."
+          },
+          {
+            "type": "int",
+            "name": "groupEventOrder",
+            "doc": "Order of the event within the group (groupId)."
+          },
+          {
+            "type": "int",
+            "name": "groupEventCount",
+            "doc": "Total number of events in the group (groupId)."
+          },
+          {
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            },
+            "name": "orderReceivingDateTime",
+            "doc": "Timestamp of order creation."
+          },
+          {
+            "type": "int",
+            "name": "orderCount",
+            "doc": "Checksum - the number of orders contained in this event."
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "SecurityGroup",
+                "namespace": "com.rbinternational.rice.investments.savingOrder",
+                "fields": [
+                  {
+                    "type": "string",
+                    "name": "securityId",
+                    "doc": "Internal security ID in T24 (SMID). Example: 000518-585."
+                  },
+                  {
+                    "type": "string",
+                    "name": "isin",
+                    "doc": "An International Securities Identification Number, defined in ISO 6166 as 12-digit alphanumeric code, that uniquely identifies a specific security. Example: AT1234567890."
+                  },
+                  {
+                    "type": "string",
+                    "name": "stockExchange",
+                    "doc": "Business / Exchange ID - MIC code. Example: XVIE."
+                  },
+                  {
+                    "type": "string",
+                    "name": "tradeCCY",
+                    "doc": "Trade currency."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "bytes",
+                        "logicalType": "decimal",
+                        "precision": 18,
+                        "scale": 8
+                      }
+                    ],
+                    "name": "unitPrice",
+                    "default": null,
+                    "doc": "Security unit price (informative)."
+                  },
+                  {
+                    "type": {
+                      "type": "array",
+                      "items": {
+                        "type": "record",
+                        "name": "OrderGroup",
+                        "namespace": "com.rbinternational.rice.investments.savingOrder",
+                        "fields": [
+                          {
+                            "type": "string",
+                            "name": "cptyOrderId",
+                            "doc": "Counterparty order ID generated by the savings management system."
+                          },
+                          {
+                            "type": "string",
+                            "name": "customerId",
+                            "doc": "Customer ID."
+                          },
+                          {
+                            "type": "string",
+                            "name": "portfolioId",
+                            "doc": "Portfolio ID."
+                          },
+                          {
+                            "type": "string",
+                            "name": "savingPlanId",
+                            "doc": "Counterparty saving plan ID."
+                          },
+                          {
+                            "type": [
+                              {
+                                "type": "int",
+                                "logicalType": "date"
+                              }
+                            ],
+                            "name": "savingPlanCreatedDate",
+                            "doc": "Date when the savings plan was created."
+                          },
+                          {
+                            "type": [
+                              {
+                                "type": "int",
+                                "logicalType": "date"
+                              }
+                            ],
+                            "name": "savingPlanLastModifiedDate",
+                            "doc": "Date when the savings plan was last modified."
+                          },
+                          {
+                            "type": {
+                              "type": "bytes",
+                              "logicalType": "decimal",
+                              "precision": 18,
+                              "scale": 8
+                            },
+                            "name": "orderQty",
+                            "doc": "Nominal ordered."
+                          },
+                          {
+                            "type": "string",
+                            "name": "cashAccountNumber",
+                            "doc": "Cash Account number."
+                          },
+                          {
+                            "type": "string",
+                            "name": "cashAccountCCY",
+                            "doc": "Cash Account currency"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "orderGroup"
+                  }
+                ]
+              }
+            },
+            "name": "securityGroups"
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

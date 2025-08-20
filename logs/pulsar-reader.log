@@ -1,0 +1,6 @@
+2025-08-08 16:19:33 INFO  pulsar.PulsarConsumer - Token načítaný zo súboru: access_token.txt
+2025-08-08 16:19:33 ERROR pulsar.PulsarConsumer - Avro schéma sa nenašla v classpath.
+2025-08-08 16:19:33 INFO  pulsar.PulsarConsumer - 🛑 Shutdown signal received. Ukončujem aplikáciu...
+2025-08-08 16:21:58 INFO  pulsar.PulsarConsumer - Token načítaný zo súboru: access_token.txt
+2025-08-08 16:21:58 ERROR pulsar.PulsarConsumer - Avro schéma sa nenašla v classpath.
+2025-08-08 16:21:58 INFO  pulsar.PulsarConsumer - 🛑 Shutdown signal received. Ukončujem aplikáciu...

@@ -1,0 +1,395 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "crm",
+    "businessSubdomain": "campaign",
+    "topicVersion": 1,
+    "topicName": "*.crm.campaign.V1",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-eda-support@rbinternational.com",
+    "created": "2024-01-25T15:11:46+00:00",
+    "eventNames": [
+      "CAMPAIGN_CREATED",
+      "CAMPAIGN_UPDATED",
+      "CAMPAIGN_DELETED"
+    ],
+    "defaultEventName": "CAMPAIGN_UPDATED",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "campaigns/v1.0::GET/campaign-management/campaigns/{campaignId}"
+  },
+  "name": "Campaign",
+  "namespace": "com.rbinternational.rice.crm.campaign",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "CampaignMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.crm.campaign",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "CAMPAIGN_CREATED",
+                "CAMPAIGN_UPDATED",
+                "CAMPAIGN_DELETED"
+              ],
+              "default": "CAMPAIGN_UPDATED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone. in UTC offset",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "CampaignPayload",
+        "namespace": "com.rbinternational.rice.crm.campaign",
+        "fields": [
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": "string",
+            "name": "campaignId",
+            "doc": "A unique identifier of a campaign."
+          },
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "name",
+            "default": null,
+            "doc": "Name of a campaign."
+          },
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "description",
+            "default": null,
+            "doc": "Description of a campaign."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "TaskCustomer",
+                "namespace": "com.rbinternational.rice.crm.campaign",
+                "fields": [
+                  {
+                    "reda": {
+                      "maxLength": 128
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "name",
+                    "default": null,
+                    "doc": "Describes shortly campaign benefit(s)."
+                  },
+                  {
+                    "reda": {
+                      "maxLength": 128
+                    },
+                    "type": "string",
+                    "name": "description",
+                    "doc": "Provides additional details for campaign benefit(s)."
+                  }
+                ],
+                "doc": "A potential customer's data."
+              }
+            ],
+            "name": "benefit",
+            "default": null,
+            "doc": "Contains campaign benefit(s) details."
+          },
+          {
+            "type": {
+              "type": "enum",
+              "name": "CampaignStatus",
+              "namespace": "com.rbinternational.rice.crm.campaign",
+              "symbols": [
+                "DRAFT",
+                "ACTIVE",
+                "INACTIVE",
+                "CANCELED",
+                "FINISHED"
+              ],
+              "doc": "The current status of a campaign: - **DRAFT** The initial status. A campaign has been created but not yet ready for activation. - **ACTIVE** The campaign is currently active and open for customer engagement. - **INACTIVE** The campaign is currently not active, therefore not open for customer engagement. - **CANCELED** The campaign has been canceled, meaning finished before the end date.- **FINISHED** The campaign has ended and therefore no longer active."
+            },
+            "name": "status",
+            "doc": "The current status of a campaign."
+          },
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "type",
+            "default": null,
+            "doc": "The type of a campaign."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "name": "OfferType",
+                "namespace": "com.rbinternational.rice.crm.campaign",
+                "symbols": [
+                  "PRE_APPROVED",
+                  "INVITATION"
+                ],
+                "doc": "Describes is the offer in a campaign type. - **PRE_APPROVED** This means that the offer for a customer has been already  pre-approved offer. E.g. Loan offers which are pre-approved from the Bank to some trusted clients.- **INVITATION** This means that an offer is ready but customer must come to the branch (possibly) bring some documentation."
+              }
+            ],
+            "name": "offerType",
+            "default": null,
+            "doc": "Describes is the offer in a campaign type."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "date"
+              }
+            ],
+            "name": "startDate",
+            "default": null,
+            "doc": "Campaign's start date determines when customers can start to engage with it."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "date"
+              }
+            ],
+            "name": "endDate",
+            "default": null,
+            "doc": "Campaign's end date determines until when campaign is open for engagement"
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "Offering",
+                  "namespace": "com.rbinternational.rice.crm.campaign",
+                  "fields": [
+                    {
+                      "type": {
+                        "type": "enum",
+                        "name": "OfferingOfferType",
+                        "namespace": "com.rbinternational.rice.crm.campaign",
+                        "symbols": [
+                          "PRODUCT",
+                          "SERVICE"
+                        ],
+                        "doc": "Offer type. Should have value equal to PRODUCT."
+                      },
+                      "name": "offerType",
+                      "doc": "Offer type. Should have value equal to PRODUCT."
+                    },
+                    {
+                      "reda": {
+                        "maxLength": 64
+                      },
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "name",
+                      "default": null,
+                      "doc": "A name of a service."
+                    },
+                    {
+                      "reda": {
+                        "maxLength": 256
+                      },
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "description",
+                      "default": null,
+                      "doc": "Extended description of a service."
+                    },
+                    {
+                      "reda": {
+                        "maxLength": 64
+                      },
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "code",
+                      "default": null,
+                      "doc": "An unique code of a product. It can be used as the product identifier."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "map",
+                            "values": "string"
+                          }
+                        }
+                      ],
+                      "name": "features",
+                      "default": null,
+                      "doc": "A list of product features."
+                    }
+                  ]
+                }
+              }
+            ],
+            "name": "offerings",
+            "default": null,
+            "doc": "A list of offerings (products and/or services) offered through a campaign."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "enum",
+                  "name": "CampaignChannel",
+                  "namespace": "com.rbinternational.rice.crm.campaign",
+                  "symbols": [
+                    "BRANCH",
+                    "CALL_CENTER",
+                    "MOBILE_BANKING",
+                    "INTERNET_BANKING",
+                    "SMS",
+                    "PUSH",
+                    "EMAIL",
+                    "LETTER",
+                    "WEBSITE",
+                    "ATM",
+                    "DSA",
+                    "REMOTE_RM"
+                  ],
+                  "doc": "A unique identifier of the channel from which the campaign is being communicated to customer, or through which customer is engaging in the campaign."
+                }
+              }
+            ],
+            "name": "channels",
+            "default": null,
+            "doc": "A unique identifier of the channel from which the campaign is being communicated to customer, or through which customer is engaging in the campaign."
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

@@ -1,0 +1,944 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "sales",
+    "businessSubdomain": "baseoffer",
+    "topicVersion": "1",
+    "topicName": "*.sales.baseOffer.V1",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-06-11T13:13:15+00:00",
+    "eventNames": [
+      "OFFERS_CREATED",
+      "OFFERS_UPDATED"
+    ],
+    "defaultEventName": "OFFERS_UPDATED",
+    "lastChangedSchemaVersion": "1.0.4",
+    "riceApiLink": "sales/v0.1::GET/offers/{offerId}"
+  },
+  "name": "BaseOffer",
+  "namespace": "com.rbinternational.rice.sales.baseoffer",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "BaseOfferMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.sales.baseoffer",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "OFFERS_CREATED",
+                "OFFERS_UPDATED"
+              ],
+              "default": "OFFERS_UPDATED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.4"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "BaseOfferPayload",
+        "namespace": "com.rbinternational.rice.sales.baseoffer",
+        "fields": [
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "offerId",
+            "default": null,
+            "doc": "Unique identifier of the offer."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "name",
+            "default": null,
+            "doc": "Name for the offer."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "externalId",
+            "default": null,
+            "doc": "An offer identifier assigned by an external system."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "consultationId",
+            "default": null,
+            "doc": "A consultation id for the offer."
+          },
+          {
+            "type": {
+              "type": "record",
+              "name": "PartyRole",
+              "namespace": "com.rbinternational.rice.sales.baseoffer",
+              "fields": [
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "partyId",
+                  "default": null,
+                  "doc": "The unique identifier from the origination system."
+                },
+                {
+                  "type": {
+                    "type": "enum",
+                    "default": "PROSPECT",
+                    "name": "PartyRoleType",
+                    "namespace": "com.rbinternational.rice.sales.baseoffer",
+                    "symbols": [
+                      "PROSPECT",
+                      "CUSTOMER"
+                    ],
+                    "doc": "Enum values for party role."
+                  },
+                  "name": "partyRoleType"
+                },
+                {
+                  "type": {
+                    "type": "record",
+                    "name": "Party",
+                    "namespace": "com.rbinternational.rice.sales.baseoffer",
+                    "fields": [
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "firstName",
+                        "default": null,
+                        "doc": "A party's first name."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "lastName",
+                        "default": null,
+                        "doc": "A party's last name."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "personalId",
+                        "default": null,
+                        "doc": "Personal ID of the party."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "fullName",
+                        "default": null,
+                        "doc": "Full name of the legal entity."
+                      },
+                      {
+                        "type": {
+                          "type": "array",
+                          "items": {
+                            "type": "record",
+                            "name": "InternationalIdentification",
+                            "namespace": "com.rbinternational.rice.sales.baseoffer",
+                            "fields": [
+                              {
+                                "type": {
+                                  "type": "enum",
+                                  "default": "__DEFAULT__",
+                                  "name": "IdentificationTypeEnum",
+                                  "namespace": "com.rbinternational.rice.sales.baseoffer",
+                                  "symbols": [
+                                    "__DEFAULT__",
+                                    "TAX_ID",
+                                    "PERSONAL_NUMBER",
+                                    "LEI",
+                                    "REGISTRATION_NUMBER",
+                                    "BIC",
+                                    "VAT_NR"
+                                  ],
+                                  "doc": "Enum values for identification types."
+                                },
+                                "name": "type"
+                              },
+                              {
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "name": "value",
+                                "default": null,
+                                "doc": "Value of the identification."
+                              }
+                            ],
+                            "doc": "International identification details."
+                          }
+                        },
+                        "name": "internationalIdentifications",
+                        "doc": "List of international identifications."
+                      },
+                      {
+                        "type": {
+                          "type": "enum",
+                          "default": "PERSON",
+                          "name": "PartyType",
+                          "namespace": "com.rbinternational.rice.sales.baseoffer",
+                          "symbols": [
+                            "PERSON",
+                            "LEGAL_ENTITY"
+                          ],
+                          "doc": "Type of the party."
+                        },
+                        "name": "partyType"
+                      }
+                    ],
+                    "doc": "Details of the party."
+                  },
+                  "name": "party"
+                },
+                {
+                  "type": {
+                    "type": "array",
+                    "items": {
+                      "type": "record",
+                      "name": "TechnicalIdentifier",
+                      "namespace": "com.rbinternational.rice.sales.baseoffer",
+                      "fields": [
+                        {
+                          "type": {
+                            "type": "enum",
+                            "default": "__DEFAULT__",
+                            "name": "TechnicalIdentifierType",
+                            "namespace": "com.rbinternational.rice.sales.baseoffer",
+                            "symbols": [
+                              "__DEFAULT__",
+                              "SUBENTITY_ID",
+                              "COCUNUT",
+                              "LEI"
+                            ],
+                            "doc": "Enum values for identification types."
+                          },
+                          "name": "type"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "value",
+                          "default": null,
+                          "doc": "Value of the technical identifier."
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "issuingSystem",
+                          "default": null,
+                          "doc": "System that issued the technical identifier."
+                        }
+                      ],
+                      "doc": "Details of a technical identifier."
+                    }
+                  },
+                  "name": "technicalIdentifiers",
+                  "doc": "List of technical identifiers."
+                },
+                {
+                  "type": {
+                    "type": "array",
+                    "items": {
+                      "type": "record",
+                      "name": "CommunicationChannel",
+                      "namespace": "com.rbinternational.rice.sales.baseoffer",
+                      "fields": [
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "phone",
+                          "doc": "Examples: 170 1234567"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "countryPhonePrefix",
+                          "doc": "The country calling codes, country dial-in codes or country's prefix number. Example: +48"
+                        },
+                        {
+                          "type": {
+                            "type": "enum",
+                            "default": "__DEFAULT__",
+                            "name": "IdentificationType",
+                            "namespace": "com.rbinternational.rice.sales.baseoffer",
+                            "symbols": [
+                              "__DEFAULT__",
+                              "MOBILE_PHONE",
+                              "EMAIL"
+                            ],
+                            "doc": "Type of communication channel."
+                          },
+                          "name": "type"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "email",
+                          "default": null,
+                          "doc": "An e-mail address."
+                        }
+                      ],
+                      "doc": "Details of a communication channel."
+                    }
+                  },
+                  "name": "communicationChannels",
+                  "doc": "List of communication channels."
+                }
+              ]
+            },
+            "name": "partyRole",
+            "doc": "Details of the party role."
+          },
+          {
+            "type": {
+              "type": "record",
+              "name": "Status",
+              "namespace": "com.rbinternational.rice.sales.baseoffer",
+              "fields": [
+                {
+                  "type": {
+                    "type": "enum",
+                    "default": "DRAFT",
+                    "name": "StatusValue",
+                    "namespace": "com.rbinternational.rice.sales.baseoffer",
+                    "symbols": [
+                      "DRAFT",
+                      "IN_PROGRESS",
+                      "CONFIGURED",
+                      "DONE",
+                      "PROPOSED",
+                      "IN_NEGOTIATION",
+                      "ACCEPTED",
+                      "CANCELLED",
+                      "REJECTED"
+                    ],
+                    "doc": "Enum values for status."
+                  },
+                  "name": "value"
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "statusReason",
+                  "default": null,
+                  "doc": "Reason for the current status."
+                },
+                {
+                  "type": {
+                    "type": "record",
+                    "name": "Process",
+                    "namespace": "com.rbinternational.rice.sales.baseoffer",
+                    "fields": [
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "currentStepDescription",
+                        "default": null,
+                        "doc": "A description of the current process step."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "previousStepDescription",
+                        "default": null,
+                        "doc": "A description of the previous process step."
+                      }
+                    ],
+                    "doc": "Details of the process."
+                  },
+                  "name": "process"
+                }
+              ],
+              "doc": "Status details of the offer."
+            },
+            "name": "status"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "activationDate",
+            "default": null,
+            "doc": "The date from which this offer is valid."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "expirationDate",
+            "default": null,
+            "doc": "The date when this offer is no longer valid."
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "Product",
+                "namespace": "com.rbinternational.rice.sales.baseoffer",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "productCode",
+                    "default": null,
+                    "doc": "An unique code of a product. It can be also used as the product identifier."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "productName",
+                    "default": null,
+                    "doc": "Name of the product."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "offeredAmount",
+                    "default": null,
+                    "doc": "An amount possible to be offered."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "approvedAmount",
+                    "default": null,
+                    "doc": "An amount which is approved for the offer."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "int"
+                    ],
+                    "name": "quantity",
+                    "default": null,
+                    "doc": "A product's quantity in the offer."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "employeeReferrerId",
+                    "default": null,
+                    "doc": "The unique identifier of the employee who gave the reference for the product."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "crossProduct",
+                    "default": null,
+                    "doc": "A name of the cross product which might be related to the offered product."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "crossProductAmount",
+                    "default": null,
+                    "doc": "An amount of the cross product which might be related to the offered product."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "category",
+                    "default": null,
+                    "doc": "Product Category of the offer. Example: \"PENSION\"."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "brandId",
+                    "default": null,
+                    "doc": "A brandId of Raiffeisen under which a product is sold. Example: Raiffeisen Bank Slovakia"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "externalProductId",
+                    "default": null,
+                    "doc": "Identifier of Product Object assigned by an external system."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "subCategory",
+                    "default": null,
+                    "doc": "Product Sub-Category of the offer."
+                  }
+                ]
+              }
+            },
+            "name": "products",
+            "doc": "Details of a product."
+          },
+          {
+            "type": {
+              "type": "record",
+              "name": "Meta",
+              "namespace": "com.rbinternational.rice.sales.baseoffer",
+              "fields": [
+                {
+                  "type": {
+                    "type": "record",
+                    "name": "CreationData",
+                    "namespace": "com.rbinternational.rice.sales.baseoffer",
+                    "fields": [
+                      {
+                        "type": [
+                          "null",
+                          {
+                            "type": "long",
+                            "logicalType": "timestamp-millis"
+                          }
+                        ],
+                        "name": "dateTime",
+                        "default": null,
+                        "doc": "Date and time of creation."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "systemId",
+                        "default": null,
+                        "doc": "ID of the system that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "systemName",
+                        "default": null,
+                        "doc": "Name of the system that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "userId",
+                        "default": null,
+                        "doc": "ID of the user that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "userName",
+                        "default": null,
+                        "doc": "Name of the user that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "locationId",
+                        "default": null,
+                        "doc": "ID of the location where the data was created."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "locationName",
+                        "default": null,
+                        "doc": "Name of the location where the data was created."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "advisorId",
+                        "default": null,
+                        "doc": "ID of the advisor that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "branchEmployeeId",
+                        "default": null,
+                        "doc": "ID of the branch employee that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "creationChannel",
+                        "default": null,
+                        "doc": "Channel through which the data was created."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "currentOwnerChannel",
+                        "default": null,
+                        "doc": "Channel which is the current owner."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "branchId",
+                        "default": null,
+                        "doc": "ID of the branch where the data was created."
+                      }
+                    ],
+                    "doc": "Details of the creation data."
+                  },
+                  "name": "creationData"
+                },
+                {
+                  "type": {
+                    "type": "record",
+                    "name": "ModificationData",
+                    "namespace": "com.rbinternational.rice.sales.baseoffer",
+                    "fields": [
+                      {
+                        "type": [
+                          "null",
+                          {
+                            "type": "long",
+                            "logicalType": "timestamp-millis"
+                          }
+                        ],
+                        "name": "dateTime",
+                        "default": null,
+                        "doc": "Date and time of creation."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "systemId",
+                        "default": null,
+                        "doc": "ID of the system that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "systemName",
+                        "default": null,
+                        "doc": "Name of the system that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "userId",
+                        "default": null,
+                        "doc": "ID of the user that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "userName",
+                        "default": null,
+                        "doc": "Name of the user that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "locationId",
+                        "default": null,
+                        "doc": "ID of the location where the data was created."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "locationName",
+                        "default": null,
+                        "doc": "Name of the location where the data was created."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "advisorId",
+                        "default": null,
+                        "doc": "ID of the advisor that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "branchEmployeeId",
+                        "default": null,
+                        "doc": "ID of the branch employee that created the data."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "creationChannel",
+                        "default": null,
+                        "doc": "Channel through which the data was created."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "currentOwnerChannel",
+                        "default": null,
+                        "doc": "Channel which is the current owner."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "branchId",
+                        "default": null,
+                        "doc": "ID of the branch where the data was created."
+                      }
+                    ],
+                    "doc": "Details of the modification data."
+                  },
+                  "name": "modificationData"
+                },
+                {
+                  "type": [
+                    "null",
+                    {
+                      "type": "record",
+                      "name": "additionalData",
+                      "namespace": "com.rbinternational.rice.sales.baseoffer",
+                      "fields": [
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "lockId",
+                          "default": null,
+                          "doc": "The technical id/token for locking functionality of the offer."
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "resumeToken",
+                          "default": null,
+                          "doc": "The technical offsets used for offer changes stream."
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "signRequestId",
+                          "default": null,
+                          "doc": "Documents signing process id."
+                        }
+                      ],
+                      "doc": "Different set of technical fields used to fulfill business use cases, e.g. technical implementation details, systems integrations, etc."
+                    }
+                  ],
+                  "name": "additionalData",
+                  "default": null,
+                  "doc": "Different set of technical fields used to fulfill business use cases, e.g. technical implementation details, systems integrations, etc."
+                }
+              ],
+              "doc": "Metadata model that must be part of every event intended for group integration."
+            },
+            "name": "meta"
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

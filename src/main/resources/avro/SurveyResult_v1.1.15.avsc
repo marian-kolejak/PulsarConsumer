@@ -1,0 +1,295 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "investments",
+    "businessSubdomain": "surveyResult",
+    "topicVersion": "2",
+    "topicName": "*.investments.surveyResult.V2",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-06-08T20:44:51+00:00",
+    "eventNames": [
+      "SURVEY_RESULT_UPDATED",
+      "SURVEY_RESULT_COMPLETED",
+      "DEFAULT"
+    ],
+    "defaultEventName": "SURVEY_RESULT_COMPLETED",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "-"
+  },
+  "name": "SurveyResult",
+  "namespace": "com.rbinternational.rice.investments.surveyResult",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "SurveyResultMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.investments.surveyResult",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "SURVEY_RESULT_UPDATED",
+                "SURVEY_RESULT_COMPLETED",
+                "DEFAULT"
+              ],
+              "default": "SURVEY_RESULT_COMPLETED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "SurveyResultPayload",
+        "namespace": "com.rbinternational.rice.investments.surveyResult",
+        "fields": [
+          {
+            "type": "long",
+            "name": "clientId",
+            "doc": "Unique identifier for the client."
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "ProductCategory",
+                "namespace": "com.rbinternational.rice.investments.surveyResult",
+                "fields": [
+                  {
+                    "type": {
+                      "type": "enum",
+                      "default": "DEFAULT",
+                      "name": "ProductCategoryType",
+                      "namespace": "com.rbinternational.rice.investments.surveyResult",
+                      "symbols": [
+                        "FUNDS_AND_ETF",
+                        "STOCKS",
+                        "CERTIFICATES",
+                        "BONDS",
+                        "DEFAULT"
+                      ],
+                      "doc": "The type of product category."
+                    },
+                    "name": "productCategoryType"
+                  },
+                  {
+                    "type": "boolean",
+                    "name": "newCategory",
+                    "doc": "Indicates if the product category has been filled in the current batch."
+                  },
+                  {
+                    "type": {
+                      "type": "enum",
+                      "default": "DEFAULT",
+                      "name": "EvaluationResult",
+                      "namespace": "com.rbinternational.rice.investments.surveyResult",
+                      "symbols": [
+                        "NOT_APPROPRIATE",
+                        "APPROPRIATE",
+                        "APPROPRIATE_BASIC",
+                        "APPROPRIATE_INTERMEDIATE",
+                        "APPROPRIATE_ADVANCED",
+                        "DEFAULT"
+                      ],
+                      "doc": "Evaluation of the client's knowledge in the product category."
+                    },
+                    "name": "result"
+                  },
+                  {
+                    "type": "string",
+                    "name": "questionnaireVersion",
+                    "doc": "Version of the questionnaire used for evaluation."
+                  },
+                  {
+                    "type": {
+                      "type": "int",
+                      "logicalType": "date"
+                    },
+                    "name": "signingDate",
+                    "doc": "Date when the form was signed, represented as days since epoch."
+                  },
+                  {
+                    "type": "boolean",
+                    "name": "signatureChannel",
+                    "doc": "Indicates if the form was signed through the EDI application."
+                  },
+                  {
+                    "type": {
+                      "type": "int",
+                      "logicalType": "date"
+                    },
+                    "name": "validityDate",
+                    "doc": "Date of the last day of validity of the product category, represented as days since epoch."
+                  },
+                  {
+                    "type": "string",
+                    "name": "language",
+                    "doc": "Language code in which the product category was filled in."
+                  },
+                  {
+                    "type": {
+                      "type": "array",
+                      "items": {
+                        "type": "record",
+                        "name": "Question",
+                        "namespace": "com.rbinternational.rice.investments.surveyResult",
+                        "fields": [
+                          {
+                            "type": "int",
+                            "name": "questionOrder",
+                            "doc": "Ranking of the question within the product category."
+                          },
+                          {
+                            "type": "string",
+                            "name": "questionCode",
+                            "doc": "Code of the answered question."
+                          },
+                          {
+                            "type": "string",
+                            "name": "questionText",
+                            "doc": "Text of the question in the language used."
+                          },
+                          {
+                            "type": "string",
+                            "name": "answerCode",
+                            "doc": "Code of the selected answer."
+                          },
+                          {
+                            "type": "string",
+                            "name": "answerText",
+                            "doc": "Text of the answer in the language used."
+                          },
+                          {
+                            "type": "boolean",
+                            "name": "answerCorrect",
+                            "doc": "Indicates whether the answer to the question was correct."
+                          }
+                        ],
+                        "doc": "Details of the questions answered in the product category."
+                      }
+                    },
+                    "name": "questions"
+                  }
+                ],
+                "doc": "Details about a specific product category evaluated by the client."
+              }
+            },
+            "name": "productCategories",
+            "doc": "List of product categories evaluated by the client."
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

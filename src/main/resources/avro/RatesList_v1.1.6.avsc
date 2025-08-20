@@ -1,0 +1,286 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "fx",
+    "businessSubdomain": "rates",
+    "topicVersion": "1",
+    "topicName": "*.fx.ratesList.V1",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2024-12-04T04:57:39+00:00",
+    "eventNames": [
+      "RATES_LIST_CREATED",
+      "RATES_LIST_UPDATED",
+      "RATES_LIST_DELETED",
+      "OTHER"
+    ],
+    "defaultEventName": "RATES_LIST_UPDATED",
+    "lastChangedSchemaVersion": "1.1.5",
+    "riceApiLink": ""
+  },
+  "name": "RatesList",
+  "namespace": "com.rbinternational.rice.fx.rates.rateslist",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "RatesListMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.fx.rates",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "RATES_LIST_CREATED",
+                "RATES_LIST_UPDATED",
+                "RATES_LIST_DELETED",
+                "OTHER"
+              ],
+              "default": "RATES_LIST_UPDATED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.1.5"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "RatesListPayload",
+        "namespace": "com.rbinternational.rice.fx.rates.rateslist",
+        "fields": [
+          {
+            "type": "string",
+            "name": "baseCurrency",
+            "doc": "Base currency for the exchange rates."
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "Rates",
+                "namespace": "com.rbinternational.rice.fx.rates.rateslist",
+                "fields": [
+                  {
+                    "type": "string",
+                    "name": "currencyPair",
+                    "doc": "ISO currency pair code CCY1CCY2 (base currency, quote currency)."
+                  },
+                  {
+                    "type": "string",
+                    "name": "currency",
+                    "doc": "ISO 4217 Alpha 3 currency code."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "buyRate",
+                    "default": null,
+                    "doc": "Transactional buy rate. Up to 9 significant figures and 6 fractional digits."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "buyEffectiveRate",
+                    "default": null,
+                    "doc": "Effective buy rate. Up to 9 significant figures and 6 fractional digits."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "sellRate",
+                    "default": null,
+                    "doc": "Transactional sell rate. Up to 9 significant figures and 6 fractional digits."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "sellEffectiveRate",
+                    "default": null,
+                    "doc": "Effective sell rate. Up to 9 significant figures and 6 fractional digits."
+                  },
+                  {
+                    "type": "double",
+                    "name": "middleRate",
+                    "doc": "Middle rate. Up to 9 significant figures and 6 fractional digits."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "double"
+                    ],
+                    "name": "parity",
+                    "default": null,
+                    "doc": "Parity of exchange rate."
+                  },
+                  {
+                    "type": "string",
+                    "name": "validityDate",
+                    "doc": "Current rate's validity date."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "OTHER",
+                        "name": "ExchangeRateType",
+                        "namespace": "com.rbinternational.rice.fx.rates.rateslist",
+                        "symbols": [
+                          "OTHER",
+                          "ACCOUNT",
+                          "CARD",
+                          "CASH",
+                          "BASE",
+                          "SECURITIES"
+                        ]
+                      }
+                    ],
+                    "name": "exchangeRateType",
+                    "default": null,
+                    "doc": "Type of exchange rate: ACCOUNT, CARD, CASH, BASE, or SECURITIES."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "int"
+                    ],
+                    "name": "listNumber",
+                    "default": null,
+                    "doc": "An ordinal number of the rates list from which the rate is derived. Lists can be created multiple times a day."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "listCreationDateTime",
+                    "default": null,
+                    "doc": "Date and time when the rate list was created. Format: ISO-8601."
+                  }
+                ]
+              }
+            },
+            "name": "exchangeRates",
+            "doc": "A list of Rates."
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

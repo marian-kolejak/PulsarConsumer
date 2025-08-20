@@ -1,0 +1,2751 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "customers",
+    "businessSubdomain": "personasparty",
+    "topicVersion": "2",
+    "topicName": "*.customers.personAsParty.V2",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-03-19T07:49:18+00:00",
+    "eventNames": [
+      "PERSON_CREATED",
+      "PERSON_DELETED",
+      "PERSON_UPDATED"
+    ],
+    "defaultEventName": "PERSON_UPDATED",
+    "lastChangedSchemaVersion": "1.9.0",
+    "riceApiLink": "customers/v1.8::#/components/schemas/Person"
+  },
+  "name": "PersonAsParty",
+  "namespace": "com.rbinternational.rice.customers.personasparty",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "PersonAsPartyMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.customers.personasparty",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "PERSON_CREATED",
+                "PERSON_DELETED",
+                "PERSON_UPDATED"
+              ],
+              "default": "PERSON_UPDATED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.9.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "PersonAsPartyPayload",
+        "namespace": "com.rbinternational.rice.customers.personasparty",
+        "fields": [
+          {
+            "type": "string",
+            "name": "partyId",
+            "doc": "The persons unique identifier from the origination system"
+          },
+          {
+            "type": {
+              "type": "record",
+              "name": "PersonName",
+              "namespace": "com.rbinternational.rice.customers.personasparty",
+              "fields": [
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "prefix",
+                  "default": null,
+                  "doc": "Precedes a person's full name and provides additional information about the person."
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "firstName",
+                  "default": null,
+                  "doc": "Part of a full name that identifies a person."
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "lastName",
+                  "default": null,
+                  "doc": "Part of full name that indicates person family."
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "middleName",
+                  "default": null,
+                  "doc": "Part of a full name that is written between their first and last name."
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "suffix",
+                  "default": null,
+                  "doc": "Follows a person's full name and provides additional information about the person."
+                },
+                {
+                  "type": "string",
+                  "name": "fullName",
+                  "doc": "A person's full name that consist of all name parts."
+                }
+              ],
+              "doc": "A first name and a last name of the person."
+            },
+            "name": "name",
+            "doc": "Person's name in any NWU's local alphabet, e.g. Latin, Cyrillic."
+          },
+          {
+            "type": [
+              "null",
+              "com.rbinternational.rice.customers.personasparty.PersonName"
+            ],
+            "name": "nameInLatin",
+            "default": null,
+            "doc": "Person's name in Latin alphabet."
+          },
+          {
+            "type": {
+              "type": "record",
+              "name": "PersonBirth",
+              "namespace": "com.rbinternational.rice.customers.personasparty",
+              "fields": [
+                {
+                  "type": [
+                    "null",
+                    {
+                      "type": "int",
+                      "logicalType": "date"
+                    }
+                  ],
+                  "name": "date",
+                  "default": null
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "place",
+                  "default": null,
+                  "doc": "A city."
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "country",
+                  "default": null,
+                  "doc": "ISO 3166 ALPHA2 country code."
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "birthName",
+                  "default": null,
+                  "doc": "A birth person's last name which had before being married and took married person's last name."
+                },
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "motherMaidenName",
+                  "default": null,
+                  "doc": "A mother's maiden name."
+                }
+              ],
+              "doc": "A place, a country and a birth name of the person."
+            },
+            "name": "birth"
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "date"
+              }
+            ],
+            "name": "nameDay",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "__DEFAULT__",
+                "name": "EmploymentType",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "symbols": [
+                  "__DEFAULT__",
+                  "PERMANENT",
+                  "FIXED_TERM",
+                  "CASUAL",
+                  "APPRENTICES",
+                  "SELF_EMPLOYED",
+                  "UNEMPLOYED",
+                  "PENSIONER"
+                ],
+                "doc": "A type of person's employment."
+              }
+            ],
+            "name": "employmentType",
+            "default": null
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "Employment",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "record",
+                        "name": "Position",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "fields": [
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "name",
+                            "default": null,
+                            "doc": "Position name."
+                          },
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "code",
+                            "default": null,
+                            "doc": "Position code retrieved from GET /datasets/codebooks/employment-positions."
+                          },
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "category",
+                            "default": null,
+                            "doc": "Position category name (e.g. manager, clerk)."
+                          }
+                        ],
+                        "doc": "Information about employee's position."
+                      }
+                    ],
+                    "name": "position",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "record",
+                        "name": "Employer",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "fields": [
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "fullName",
+                            "default": null,
+                            "doc": "A full name of Legal Entity."
+                          },
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "shortName",
+                            "default": null,
+                            "doc": "A short name of Legal Entity"
+                          },
+                          {
+                            "type": {
+                              "type": "array",
+                              "items": {
+                                "type": "record",
+                                "name": "LegalEntityIdentification",
+                                "namespace": "com.rbinternational.rice.customers.personasparty",
+                                "fields": [
+                                  {
+                                    "type": [
+                                      "null",
+                                      {
+                                        "type": "enum",
+                                        "default": "__DEFAULT__",
+                                        "name": "LegalEntityIdentificationType",
+                                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                                        "symbols": [
+                                          "__DEFAULT__",
+                                          "HR_OIB",
+                                          "HR_MBS",
+                                          "COCUNUT",
+                                          "LEI",
+                                          "RO_CUI",
+                                          "REGISTRATION_NUMBER",
+                                          "TAX_ID",
+                                          "BIC",
+                                          "VAT_NR",
+                                          "ISIN",
+                                          "AT_OENB",
+                                          "WKN",
+                                          "BH_JIB",
+                                          "SUBENTITY_ID",
+                                          "PERSONAL_NUMBER",
+                                          "SOCIAL_SECURITY_NUMBER",
+                                          "SK_ECHID",
+                                          "SK_BIRTH_NUMBER",
+                                          "SK_BIRTH_FAKE_NUMBER",
+                                          "UA_TAX_ID_RESIDENT",
+                                          "UA_TAX_ID_NOT_RESIDENT",
+                                          "PASSPORT_NUMBER",
+                                          "EXTERNAL_DOCUMENT_ID",
+                                          "CUSTOMER_ID"
+                                        ],
+                                        "doc": "A legal entity's identification type dictionary.  - **HR_OIB** A croatian personal identification number. - **HR_MBS** A croatian court busines register.- **COCUNUT** Tiger ID - customer's RBI group id - tiger unique identifier. - **LEI** Legal Entity Identifier. ISO 17442 LEI code structure.  - **RO_CUI** A romanian national trade register number. - **REGISTRATION_NUMBER** A company's registration number. - **TAX_ID** A party's tax identifier. - **BIC** Business Identifier Code. ISO 9362 SWIFT BIC code structure.  - **VAT_NR** A VAT number. - **ISIN** An International Securities Identification Number, defined in ISO 6166 as 12-digit alphanumeric code, that uniquely identifies a specific security. - **AT_OENB** An identifier of a borrower issued by the Austrian National Bank (OeNB). - **WKN** The securities identification number (Wertpapieremittentennummer), 6-digit combination of numbers and letters used in Germany and Austria to identify financial instruments. - **BH_JIB** a company's unique identification number (Jedinstveni Identifikacioni Broj) in Bosnia, 13 digits - **SUBENTITY_ID** An identifier of a company's department or a division if registered in customers database as a separate entity. - **EXTERNAL_DOCUMENT_ID** - An external document identifier created by external system (e.g. client application), not by the origination system (e.g. DMS).   - **CUSTOMER_ID** A customer identifier from the origination system."
+                                      }
+                                    ],
+                                    "name": "type",
+                                    "default": null
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "number",
+                                    "default": null
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      {
+                                        "type": "int",
+                                        "logicalType": "date"
+                                      }
+                                    ],
+                                    "name": "validFrom",
+                                    "default": null
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      {
+                                        "type": "int",
+                                        "logicalType": "date"
+                                      }
+                                    ],
+                                    "name": "validTo",
+                                    "default": null
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "issuingAuthority",
+                                    "default": null
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "identifications",
+                            "doc": ""
+                          },
+                          {
+                            "type": [
+                              "null",
+                              {
+                                "type": "record",
+                                "name": "CommonAddress",
+                                "namespace": "com.rbinternational.rice.customers.common",
+                                "fields": [
+                                  {
+                                    "type": [
+                                      "null",
+                                      {
+                                        "type": "enum",
+                                        "default": "OTHER",
+                                        "name": "AddressType",
+                                        "namespace": "com.rbinternational.rice.customers.common",
+                                        "symbols": [
+                                          "OTHER",
+                                          "LEGAL",
+                                          "MAIN",
+                                          "CORRESPONDENCE",
+                                          "WORK",
+                                          "CARD_DELIVERY",
+                                          "REAL_HEADQUARTERS",
+                                          "RESIDENCY",
+                                          "SEASONAL",
+                                          "STATEMENT",
+                                          "SUBSIDIARY",
+                                          "TEMPORARY"
+                                        ],
+                                        "doc": "A dictionary of address' purposes."
+                                      }
+                                    ],
+                                    "name": "addressType",
+                                    "default": null
+                                  },
+                                  {
+                                    "reda": {
+                                      "maxLength": 64
+                                    },
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "identifier",
+                                    "default": null,
+                                    "doc": "A unique identifier for the address."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "country",
+                                    "default": null,
+                                    "doc": "ISO 3166 ALPHA2 country code."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "county",
+                                    "default": null,
+                                    "doc": "A county name."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "streetType",
+                                    "default": null,
+                                    "doc": "A proprietary street type definition."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "street",
+                                    "default": null,
+                                    "doc": "A street name."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "streetCode",
+                                    "default": null,
+                                    "doc": "A street code retrieved from GET /datasets/streets."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "streetNumber",
+                                    "default": null,
+                                    "doc": "Identifies a building or a parcel number on a given street."
+                                  },
+                                  {
+                                    "reda": {
+                                      "minLength": 1,
+                                      "maxLength": 16
+                                    },
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "buildingNumber",
+                                    "default": null,
+                                    "doc": "Identifies a building number on a given street. Used when a street number is not sufficient e.g. when a building has multiple units or wings that are numbered differently from the street number"
+                                  },
+                                  {
+                                    "reda": {
+                                      "maxLength": 64
+                                    },
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "buildingName",
+                                    "default": null,
+                                    "doc": "A name of the building."
+                                  },
+                                  {
+                                    "reda": {
+                                      "minLength": 1,
+                                      "maxLength": 16
+                                    },
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "doorNumber",
+                                    "default": null,
+                                    "doc": "Identifies a flat/door number."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "floorNumber",
+                                    "default": null,
+                                    "doc": "Identifies a floor number."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "staircaseNumber",
+                                    "default": null,
+                                    "doc": "Identifies a staircase number."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "city",
+                                    "default": null,
+                                    "doc": "A city."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "cityCode",
+                                    "default": null,
+                                    "doc": "A city code retrieved from GET /datasets/sities."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "village",
+                                    "default": null,
+                                    "doc": "A village name."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "villageCode",
+                                    "default": null,
+                                    "doc": "A village code retrieved from GET /datasets/villages."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "neighborhood",
+                                    "default": null,
+                                    "doc": "A neighborhood name."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "neighborhoodCode",
+                                    "default": null,
+                                    "doc": "A neighborhood code retrieved from GET /datasets/neighborhoods."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "postalCode",
+                                    "default": null,
+                                    "doc": "A Postal Code."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "record",
+                                          "name": "District",
+                                          "namespace": "com.rbinternational.rice.customers.common",
+                                          "fields": [
+                                            {
+                                              "type": [
+                                                "null",
+                                                "string"
+                                              ],
+                                              "name": "id",
+                                              "default": null,
+                                              "doc": "District's identifier."
+                                            },
+                                            {
+                                              "type": [
+                                                "null",
+                                                "string"
+                                              ],
+                                              "name": "name",
+                                              "default": null,
+                                              "doc": "Human readable name of a district."
+                                            },
+                                            {
+                                              "type": [
+                                                "null",
+                                                "string"
+                                              ],
+                                              "name": "typeCode",
+                                              "default": null,
+                                              "doc": "District's type code. The list of possible disticts type can be retrieved using Datasets API."
+                                            }
+                                          ],
+                                          "doc": "The individual district of a given type. The list of possible districts identifiers and names can be retrieved using Datasets API."
+                                        }
+                                      }
+                                    ],
+                                    "name": "districts",
+                                    "default": null,
+                                    "doc": "An array of districts."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      {
+                                        "type": "array",
+                                        "items": "string"
+                                      }
+                                    ],
+                                    "name": "addressLines",
+                                    "default": null,
+                                    "doc": "An alternative to the structured format giving the address multiple lines. The recommendation is to use the first line for the street related data and the second line for a city, a postal code and a country."
+                                  },
+                                  {
+                                    "type": [
+                                      "boolean",
+                                      "null"
+                                    ],
+                                    "name": "isProvidedByCustomer",
+                                    "default": true,
+                                    "doc": "A flag which indicates if data is provided by the customer. If not, then respective data is captured from different sources, unofficially, not provided by the customer."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "boolean"
+                                    ],
+                                    "name": "isPreferred",
+                                    "default": null,
+                                    "doc": "Defines if the address is preferred."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      {
+                                        "type": "int",
+                                        "logicalType": "date"
+                                      }
+                                    ],
+                                    "name": "startDate",
+                                    "default": null
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      {
+                                        "type": "int",
+                                        "logicalType": "date"
+                                      }
+                                    ],
+                                    "name": "endDate",
+                                    "default": null
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "postOfficeBox",
+                                    "default": null,
+                                    "doc": "A post office box is a uniquely addressable lockable box located on the premises of a post office."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "name": "postOffice",
+                                    "default": null,
+                                    "doc": "A post office box is a uniquely addressable lockable box located on the premises of a post office."
+                                  },
+                                  {
+                                    "type": [
+                                      "null",
+                                      "boolean"
+                                    ],
+                                    "name": "isValid",
+                                    "default": null,
+                                    "doc": "A flag that indicates if the address is validated and is real, confirming its existence."
+                                  }
+                                ],
+                                "doc": "Definition of address in 2 ways: **Structured** by filling country, street, buildingNumber, city, postalCode. **Unstructured** by filling addressLines. Field addressType is defining purpose of this address. This type definition relates to the standard ISO20022."
+                              }
+                            ],
+                            "name": "legalAddress",
+                            "default": null
+                          },
+                          {
+                            "type": [
+                              "null",
+                              {
+                                "type": "int",
+                                "logicalType": "date"
+                              }
+                            ],
+                            "name": "companyEstablishmentDate",
+                            "default": null
+                          },
+                          {
+                            "type": [
+                              "null",
+                              "com.rbinternational.rice.customers.personasparty.PersonName"
+                            ],
+                            "name": "contactPersonName",
+                            "default": null
+                          },
+                          {
+                            "type": [
+                              "null",
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "record",
+                                  "name": "CommonCommunicationChannel",
+                                  "namespace": "com.rbinternational.rice.customers.common",
+                                  "fields": [
+                                    {
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "name": "id",
+                                      "default": null,
+                                      "doc": "The identifier of a communication channel."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "name": "description",
+                                      "default": null,
+                                      "doc": "A description of a communication channel."
+                                    },
+                                    {
+                                      "type": {
+                                        "type": "enum",
+                                        "default": "__DEFAULT__",
+                                        "name": "CommunicationChannelType",
+                                        "namespace": "com.rbinternational.rice.customers.common",
+                                        "symbols": [
+                                          "__DEFAULT__",
+                                          "FAX",
+                                          "DOMESTIC_PHONE",
+                                          "MOBILE_PHONE",
+                                          "EMAIL",
+                                          "WEBSITE",
+                                          "FACEBOOK",
+                                          "INSTAGRAM",
+                                          "LINKED_IN",
+                                          "MOBILE_PUSH_NOTIFICATION",
+                                          "POST"
+                                        ]
+                                      },
+                                      "name": "type",
+                                      "doc": "Communication channel type"
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "boolean"
+                                      ],
+                                      "name": "isPrimary",
+                                      "default": null,
+                                      "doc": "A flag indicating the communication channel as the one to use in the first order."
+                                    },
+                                    {
+                                      "type": [
+                                        "boolean",
+                                        "null"
+                                      ],
+                                      "name": "isProvidedByCustomer",
+                                      "default": true,
+                                      "doc": "A flag which indicates if data is provided by the customer. If not, then respective data is captured from different sources, unofficially, not provided by the customer."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        {
+                                          "type": "enum",
+                                          "default": "__DEFAULT__",
+                                          "name": "CommunicationChannelStatus",
+                                          "namespace": "com.rbinternational.rice.customers.common",
+                                          "symbols": [
+                                            "__DEFAULT__",
+                                            "VERIFIED",
+                                            "VALID",
+                                            "INVALID",
+                                            "NOT_USED"
+                                          ],
+                                          "doc": "A validity status of the communication channel. Possible values: \n\t- **VALID** A communication channel is valid. \n\t- **INVALID** A communication channel is not valid. \n\t- **NOT_USED** A communication channel was valid in the past, but currently is not used anymore. **VERIFIED** - The customer confirmed that is the owner and the communication channel is valid."
+                                        }
+                                      ],
+                                      "name": "status",
+                                      "default": null,
+                                      "doc": "A validity status of the communication channel. Possible values: \n\t- **VALID** A communication channel is valid. \n\t- **INVALID** A communication channel is not valid. \n\t- **NOT_USED** A communication channel was valid in the past, but currently is not used anymore."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        {
+                                          "type": "record",
+                                          "name": "Phone",
+                                          "namespace": "com.rbinternational.rice.customers.common",
+                                          "fields": [
+                                            {
+                                              "reda": {
+                                                "minLength": 1,
+                                                "maxLength": 35,
+                                                "pattern": "^?{1,4}?[-.]??{1,3}??[-.]?{1,4}[-.]?{1,4}[-.]?{1,9}$"
+                                              },
+                                              "type": "string",
+                                              "name": "phone",
+                                              "doc": "A customer's mobile phone number. The country prefix may be included."
+                                            },
+                                            {
+                                              "reda": {
+                                                "pattern": "^(\\+?\\d{1,3}|\\d{1,4})$"
+                                              },
+                                              "type": [
+                                                "null",
+                                                "string"
+                                              ],
+                                              "name": "countryPhonePrefix",
+                                              "default": null,
+                                              "doc": "The country calling codes, country dial-in codes or country's prefix number."
+                                            },
+                                            {
+                                              "type": [
+                                                "null",
+                                                {
+                                                  "type": "enum",
+                                                  "default": "__DEFAULT__",
+                                                  "name": "PhoneActiveNotificationChannel",
+                                                  "namespace": "com.rbinternational.rice.customers.common",
+                                                  "symbols": [
+                                                    "__DEFAULT__",
+                                                    "SMS",
+                                                    "CALL"
+                                                  ]
+                                                }
+                                              ],
+                                              "name": "activeNotificationChannel",
+                                              "default": null
+                                            },
+                                            {
+                                              "type": {
+                                                "type": "enum",
+                                                "default": "__DEFAULT__",
+                                                "name": "PhoneType",
+                                                "namespace": "com.rbinternational.rice.customers.common",
+                                                "symbols": [
+                                                  "__DEFAULT__",
+                                                  "DOMESTIC_PHONE",
+                                                  "MOBILE_PHONE",
+                                                  "FAX"
+                                                ]
+                                              },
+                                              "name": "type"
+                                            },
+                                            {
+                                              "type": [
+                                                "null",
+                                                {
+                                                  "type": "enum",
+                                                  "default": "__DEFAULT__",
+                                                  "name": "CommunicationChannelPurpose",
+                                                  "namespace": "com.rbinternational.rice.customers.common",
+                                                  "symbols": [
+                                                    "__DEFAULT__",
+                                                    "MAIN_PRIVATE",
+                                                    "MAIN_BUSINESS",
+                                                    "OTHER_PRIVATE",
+                                                    "OTHER_BUSINESS",
+                                                    "BROKERAGE",
+                                                    "TREASURY",
+                                                    "FINANCE",
+                                                    "MOBILE_BANKING",
+                                                    "CHATBOT",
+                                                    "ANTI_FRAUD",
+                                                    "SUBSIDIARY_BUSINESS"
+                                                  ],
+                                                  "doc": "The purpose of using a specific communication channel:\n\t- **MAIN_PRIVATE** The phone to be used in regards to a private individual.\n\t- **MAIN_BUSINESS** The phone to be used in regards to business duties.\n\t- **OTHER_PRIVATE** The additional phone to be used in regards to a private individual.\n\t- **OTHER_BUSINESS** The additional phone to be used in regards to business duties.\n\t- **BROKERAGE** The phone to be used in regards to brokerage services.\n\t- **TREASURY** The phone to be used in regards to treasury services. **FINANCE** The phone to be used in regards to financial services, e.g. transaction confirmation."
+                                                }
+                                              ],
+                                              "name": "purpose",
+                                              "default": null,
+                                              "doc": "The purpose of using a specific communication channel"
+                                            }
+                                          ],
+                                          "doc": "A domestic or mobile phone number."
+                                        }
+                                      ],
+                                      "name": "phone",
+                                      "default": null,
+                                      "doc": "A domestic or mobile phone number."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        {
+                                          "type": "record",
+                                          "name": "Email",
+                                          "namespace": "com.rbinternational.rice.customers.common",
+                                          "fields": [
+                                            {
+                                              "type": "string",
+                                              "name": "email"
+                                            },
+                                            {
+                                              "type": [
+                                                "null",
+                                                {
+                                                  "type": "enum",
+                                                  "default": "__DEFAULT__",
+                                                  "name": "EmailActiveNotificationChannel",
+                                                  "namespace": "com.rbinternational.rice.customers.common",
+                                                  "symbols": [
+                                                    "__DEFAULT__",
+                                                    "EMAIL"
+                                                  ]
+                                                }
+                                              ],
+                                              "name": "activeNotificationChannel",
+                                              "default": null
+                                            },
+                                            {
+                                              "type": [
+                                                "null",
+                                                {
+                                                  "type": "enum",
+                                                  "default": "__DEFAULT__",
+                                                  "name": "EmailPurpose",
+                                                  "namespace": "com.rbinternational.rice.customers.common",
+                                                  "symbols": [
+                                                    "__DEFAULT__",
+                                                    "MAIN_PRIVATE",
+                                                    "MAIN_BUSINESS",
+                                                    "OTHER_PRIVATE",
+                                                    "OTHER_BUSINESS",
+                                                    "BROKERAGE",
+                                                    "TREASURY",
+                                                    "OTHER_NOTICES",
+                                                    "OTHER_NOTIFICATIONS",
+                                                    "MARKET_RESEARCH",
+                                                    "POSITION_REPORT"
+                                                  ]
+                                                }
+                                              ],
+                                              "name": "purpose",
+                                              "default": null,
+                                              "doc": "The purpose of using a specific communication channel:\n                - **MAIN_PRIVATE** The e-mail to be used in regards to a private individual.\n                - **MAIN_BUSINESS** The e-mail to be used in regards to business duties.\n                - **OTHER_PRIVATE** The additional e-mail to be used in regards to a private individual.\n                - **OTHER_BUSINESS** The additional e-mail to be used in regards to business duties.\n                - **BROKERAGE** The e-mail to be used in regards to brokerage services.\n                - **TREASURY** The e-mail to be used in regards to treasury services.\n                - **OTHER_NOTICES** Deprecated please use OTHER_NOTIFICATIONS instead. The e-mail to be used for miscellaneous notices and communications that do not fall under the other specified categories.\n                - **OTHER_NOTIFICATIONS** The e-mail to be used for miscellaneous notices and communications that do not fall under the other specified categories.\n                - **MARKET_RESEARCH** The e-mail to be used for communications related to market research activities, including surveys, data collection, and research findings."
+                                            }
+                                          ],
+                                          "doc": "An e-mail address."
+                                        }
+                                      ],
+                                      "name": "email",
+                                      "default": null,
+                                      "doc": "An e-mail address."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "name": "websiteLink",
+                                      "default": null,
+                                      "doc": "An URL to a party website."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "name": "facebookLink",
+                                      "default": null,
+                                      "doc": "A link to the Facebook profile."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "name": "instagramLink",
+                                      "default": null,
+                                      "doc": "A link to the Instagram profile."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "name": "linkedinLink",
+                                      "default": null,
+                                      "doc": "A link to the LinkedIn profile."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        {
+                                          "type": "record",
+                                          "name": "MobilePushNotification",
+                                          "namespace": "com.rbinternational.rice.customers.common",
+                                          "fields": [
+                                            {
+                                              "type": "string",
+                                              "name": "deviceToken",
+                                              "doc": "A push token, a unique key for the app-device combination. It allows push service providers to route and deliver notifications only to the intended device (to the unique app-device combination) e.g. to the mobile application."
+                                            },
+                                            {
+                                              "type": [
+                                                "null",
+                                                {
+                                                  "type": "enum",
+                                                  "default": "__DEFAULT__",
+                                                  "name": "MobilePushNotificationActiveChannel",
+                                                  "namespace": "com.rbinternational.rice.customers.common",
+                                                  "symbols": [
+                                                    "__DEFAULT__",
+                                                    "MOBILE_PUSH_NOTIFICATION"
+                                                  ],
+                                                  "doc": ""
+                                                }
+                                              ],
+                                              "name": "activeNotificationChannel",
+                                              "default": null,
+                                              "doc": ""
+                                            }
+                                          ],
+                                          "doc": "A mobile push notification channel."
+                                        }
+                                      ],
+                                      "name": "mobilePushNotification",
+                                      "default": null,
+                                      "doc": "A mobile push notification channel."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "com.rbinternational.rice.customers.common.CommonAddress"
+                                      ],
+                                      "name": "post",
+                                      "default": null,
+                                      "doc": "A postal address."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        {
+                                          "type": "long",
+                                          "logicalType": "timestamp-millis"
+                                        }
+                                      ],
+                                      "name": "startDate",
+                                      "default": null,
+                                      "doc": "A start date when the communication channel was used."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        {
+                                          "type": "long",
+                                          "logicalType": "timestamp-millis"
+                                        }
+                                      ],
+                                      "name": "endDate",
+                                      "default": null,
+                                      "doc": "An end date when the communication channel stopped being used."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        {
+                                          "type": "long",
+                                          "logicalType": "timestamp-millis"
+                                        }
+                                      ],
+                                      "name": "lastVerificationDate",
+                                      "default": null,
+                                      "doc": "Last date when the validity information was confirmed."
+                                    }
+                                  ],
+                                  "doc": "Defining possible communication and notification (CALL/SMS/EMAIL) channels."
+                                }
+                              }
+                            ],
+                            "name": "communicationChannels",
+                            "default": null,
+                            "doc": "Defining possible communication and notification (CALL/SMS/EMAIL) channels."
+                          },
+                          {
+                            "type": [
+                              "null",
+                              "boolean"
+                            ],
+                            "name": "hasDirectBusinessRelationship",
+                            "default": null,
+                            "doc": "A flag showing that the party has direct business relation with the bank (e.g. having an account or a loan)."
+                          },
+                          {
+                            "type": [
+                              "null",
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "record",
+                                  "name": "PartyResidency",
+                                  "namespace": "com.rbinternational.rice.customers.personasparty",
+                                  "fields": [
+                                    {
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "name": "countryCode",
+                                      "default": null,
+                                      "doc": "ISO 3166 ALPHA2 country code."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "boolean"
+                                      ],
+                                      "name": "isPermanent",
+                                      "default": null,
+                                      "doc": "A flag to distinguish between permanent and temporary residency."
+                                    },
+                                    {
+                                      "type": [
+                                        "null",
+                                        "boolean"
+                                      ],
+                                      "name": "isForeign",
+                                      "default": null,
+                                      "doc": "A flag showing that in regards to NWU the residency is in the foreign country."
+                                    }
+                                  ]
+                                }
+                              }
+                            ],
+                            "name": "residency",
+                            "default": null,
+                            "doc": "An array of party`s residencies."
+                          }
+                        ],
+                        "doc": "Information about person's employer."
+                      }
+                    ],
+                    "name": "employer",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "startDate",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "endDate",
+                    "default": null
+                  }
+                ]
+              }
+            },
+            "name": "employment",
+            "doc": "Information about person's current and past employment."
+          },
+          {
+            "type": [
+              "null",
+              "int"
+            ],
+            "name": "totalWorkingMonths",
+            "default": null,
+            "doc": "The total number of months worked in a lifetime."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "__DEFAULT__",
+                "name": "MaritalStatus",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "symbols": [
+                  "__DEFAULT__",
+                  "MARRIED",
+                  "SEPARATED",
+                  "DIVORCED",
+                  "WIDOWED",
+                  "SINGLE",
+                  "CONCUBINAGE"
+                ],
+                "doc": "Distinct options that describe a person's relationship with a significant other"
+              }
+            ],
+            "name": "maritalStatus",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "int"
+            ],
+            "name": "childrenNumber",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "Hobby",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "code",
+                    "default": null,
+                    "doc": "A reference code used to represent hobby code in NWUs dictionaries."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "name",
+                    "default": null,
+                    "doc": "A name is human readable label which client application will show to the User."
+                  }
+                ],
+                "doc": "A personal hobby which person does in free time."
+              }
+            ],
+            "name": "hobby",
+            "default": null,
+            "doc": "A personal hobby which person does in free time."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "OTHER",
+                "name": "Gender",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "symbols": [
+                  "MALE",
+                  "FEMALE",
+                  "INTER",
+                  "UNKNOWN",
+                  "OTHER"
+                ],
+                "doc": "A definition of gender types."
+              }
+            ],
+            "name": "gender",
+            "default": null
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "PersonIdentification",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "__DEFAULT__",
+                        "name": "PersonalIdentificationType",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "__DEFAULT__",
+                          "PERSONAL_NUMBER",
+                          "SOCIAL_SECURITY_NUMBER",
+                          "SK_ECHID",
+                          "SK_BIRTH_NUMBER",
+                          "SK_BIRTH_FAKE_NUMBER",
+                          "UA_TAX_ID_RESIDENT",
+                          "UA_TAX_ID_NOT_RESIDENT",
+                          "COCUNUT",
+                          "TAX_ID",
+                          "PASSPORT_NUMBER",
+                          "PERSONAL_ID_CARD_NUMBER",
+                          "DRIVING_LICENSE_NUMBER"
+                        ],
+                        "doc": "A pesonal identification's type dictionary."
+                      }
+                    ],
+                    "name": "type",
+                    "default": null,
+                    "doc": "A pesonal identification's type."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "number",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "validFrom",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "validTo",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "issuingAuthority",
+                    "default": null
+                  },
+                  {
+                    "reda": {
+                      "pattern": "[A-Z]{2}",
+                      "example": "SE"
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "issuingAuthorityCountryCode",
+                    "default": null,
+                    "doc": "ISO 3166 ALPHA2 country code."
+                  }
+                ]
+              }
+            },
+            "name": "identifications"
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "name": "nationalities",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "name": "languages",
+            "default": null,
+            "doc": "A person's languages."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "name": "citizenships",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "primaryParent",
+            "default": null,
+            "doc": "The full name of the person's primary parent (mother)."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "secondaryParent",
+            "default": null,
+            "doc": "The full name of the person's secondary parent."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "PersonalIncome",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": "string",
+                    "name": "amount",
+                    "doc": "A person's annually income."
+                  },
+                  {
+                    "type": "string",
+                    "name": "source",
+                    "doc": "A person's source of income."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "currency",
+                    "default": null,
+                    "doc": "ISO 4217 Alpha 3 currency code."
+                  }
+                ],
+                "doc": "The annual amount and source of person's main or additional income"
+              }
+            ],
+            "name": "income",
+            "default": null,
+            "doc": "The annual amount and source of person's main or additional income"
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "com.rbinternational.rice.customers.personasparty.PersonalIncome"
+              }
+            ],
+            "name": "additionalIncomes",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "PersonalDocument",
+                  "namespace": "com.rbinternational.rice.customers.personasparty",
+                  "fields": [
+                    {
+                      "type": "string",
+                      "name": "id",
+                      "doc": "The id of the document."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "serialNumber",
+                      "default": null,
+                      "doc": "The serial number of the document."
+                    },
+                    {
+                      "type": {
+                        "type": "enum",
+                        "default": "OTHER",
+                        "name": "DocumentType",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "PERSONAL_ID_CARD",
+                          "PERSONAL_ID_PASSPORT",
+                          "PASSPORT",
+                          "FOREIGN_PASSPORT",
+                          "UA_TRAVEL_PASSPORT",
+                          "BIRTH_CERT",
+                          "CITIZENSHIP_CERT",
+                          "PERSONAL_ID_CARD_TEMP",
+                          "RESIDENCE_PERMIT",
+                          "RESIDENCE_PERMIT_TEMP",
+                          "REFUGEE_ID_CARD",
+                          "RBI_DOCUMENT",
+                          "OTHER",
+                          "PERSONAL_ID_UE_CARD",
+                          "NATIONAL_ID_OLD_CARD",
+                          "PERSONAL_ID_BIOMETRIC_CARD",
+                          "PENSION_CERT",
+                          "GREEN_CARD",
+                          "ADDRESS_CARD"
+                        ],
+                        "doc": "A dictionary of possible document types - passport, id card, drivers' license etc. Possible values:\\n        - **PERSONAL_ID_CARD** A personal national identity plastic card.\\n        - **PERSONAL_ID_PASSPORT** A personal national identity in the form of a passport.\\n        - **FOREIGN_PASSPORT** A passport of the foreigner.\\n        - **PASSPORT** A national passport.\\n        - **UA_TRAVEL_PASSPORT** A Ukrainian travel passport to go abroad.\\n        - **BIRTH_CERT** A birth certificate e.g. act of birth.\\n        - **CITIZENSHIP_CERT** A certificate of a citizenship.\\n        - **PERSONAL_ID_CARD_TEMP** A temporary personal national identity plastic card.\\n        - **RESIDENCE_PERMIT** A permanent residence permit for non residents.\\n        - **RESIDENCE_PERMIT_TEMP** A certificate of a temporary residence.\\n        - **REFUGEE_ID_CARD** A refugee identity card.\\n   - **RBI_DOCUMENT** A Raiffeisen's Group customer document.\\n - **PERSONAL_ID_UE_CARD** A personal European Union identity plastic card.\\n  - **NATIONAL_ID_OLD_CARD** A personal national identity in the form of old paper document according to old format.\\n    - **PERSONAL_ID_BIOMETRIC_CARD** A personal national electronic (biometric) identity card in line with the requirements of European Commission.\\n   - **PENSION_CERT** A personal national certificate that provides official confirmation of the individual's status as a pensioner.\\n   - **GREEN_CARD** A Permanent Resident Card issued by the United States Citizenship and Immigration Services to foreign nationals allowing them to live and work permanently in the United States.\\n  - **ADDRESS_CARD** Address Card is an official document (in a card form, similarly to the Identity Card), which is issued to every person registered as living.\\n - **OTHER** Other type of a document."
+                      },
+                      "name": "type"
+                    },
+                    {
+                      "type": [
+                        "null",
+                        {
+                          "type": "int",
+                          "logicalType": "date"
+                        }
+                      ],
+                      "name": "issuedOn",
+                      "default": null
+                    },
+                    {
+                      "type": [
+                        "null",
+                        {
+                          "type": "int",
+                          "logicalType": "date"
+                        }
+                      ],
+                      "name": "validUntil",
+                      "default": null
+                    },
+                    {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "issuingAuthority",
+                      "default": null,
+                      "doc": "The authority that issued a document."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "country",
+                      "default": null,
+                      "doc": "ISO 3166 ALPHA2 country code."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        {
+                          "type": "enum",
+                          "default": "OTHER",
+                          "name": "PresentationChannel",
+                          "namespace": "com.rbinternational.rice.customers.personasparty",
+                          "symbols": [
+                            "IN_PERSON",
+                            "RBI_APP",
+                            "GOV_APP",
+                            "OTHER"
+                          ],
+                          "doc": "The channel used to present the document so that the Bank can validate it. Possible values:\n                            - **IN_PERSON** The person presented the document in person.\n                            - **RBI_APP** The person uploaded the document using the RBI application.\n                            - **GOV_APP** The person presented the document using the government official application.\n                            - **OTHER** The person used other channels to present the document."
+                        }
+                      ],
+                      "name": "presentationChannel",
+                      "default": null
+                    }
+                  ]
+                }
+              }
+            ],
+            "name": "documents",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "name": "isIdentified",
+            "default": null,
+            "doc": "A flag which indicates if a customer has been personally identified by a Bank - face to face in a branch office\n        or remotely via video identification."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "OTHER",
+                "name": "Role",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "symbols": [
+                  "CONTACT_PERSON",
+                  "MANAGER",
+                  "OWNER",
+                  "BENEFICIARY",
+                  "DIRECTOR",
+                  "SECRETARY",
+                  "KYC_CONTACT_PERSON",
+                  "FATCA_OFFICER",
+                  "AML_OFFICER",
+                  "BOARD_CHAIRMAN",
+                  "DEPUTY_BOARD_CHAIRMAN",
+                  "BOARD_MEMBER",
+                  "CEO",
+                  "CFO",
+                  "MANAGING_DIRECTOR",
+                  "SUPERVISORY_BOARD_MEMBER",
+                  "FOUNDER",
+                  "PROTECTOR",
+                  "MANAGED_PROPERTY_USER",
+                  "OTHER",
+                  "LOAN_CO_DEBTOR",
+                  "LOAN_MAIN_DEBTOR",
+                  "CAPITAL_MARKETS_REPRESENTATIVE",
+                  "REFERRER",
+                  "EMPLOYEE"
+                ],
+                "doc": "A role of the connected person."
+              }
+            ],
+            "name": "role",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "occupation",
+            "default": null,
+            "doc": "A person's occupation."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "EducationLevel",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "code",
+                    "default": null,
+                    "doc": "Education level code."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "name",
+                    "default": null,
+                    "doc": "Education level name."
+                  }
+                ],
+                "doc": "A person's highest education level. Values should be correlated with Datasets API Education Levels codebook."
+              }
+            ],
+            "name": "educationLevel",
+            "default": null,
+            "doc": "A person's highest education level. Values should be correlated with Datasets API Education Levels codebook."
+          },
+          {
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "name": "isPep",
+            "default": null,
+            "doc": "A flag which indicates if a person is a politically exposed person."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "Turnover",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "currency",
+                    "default": null,
+                    "doc": "ISO 4217 Alpha 3 currency code."
+                  },
+                  {
+                    "type": {
+                      "type": "bytes",
+                      "precision": 28,
+                      "scale": 10,
+                      "logicalType": "decimal"
+                    },
+                    "name": "amount",
+                    "doc": "The amount given with fractional digits."
+                  },
+                  {
+                    "type": "string",
+                    "name": "year"
+                  }
+                ],
+                "doc": "The latest full year turnover."
+              }
+            ],
+            "name": "turnover",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "name": "isLegallyIncompetent",
+            "default": null,
+            "doc": "A person lacks sufficient understanding or capacity to make or communicate responsible decisions concerning himself."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "Household",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "OTHER",
+                        "name": "HouseholdCategoryESA",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "EMPLOYER",
+                          "OWN_ACCOUNT_WORKER",
+                          "EMPLOYEE",
+                          "RENTIER",
+                          "PENSIONER",
+                          "OTHER"
+                        ],
+                        "doc": "Household category based on largest income categorization in European system of accounts (ESA) 2010."
+                      }
+                    ],
+                    "name": "esaCategory",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "int"
+                    ],
+                    "name": "numberOfEmployees",
+                    "default": null,
+                    "doc": "Number of employed people in the household."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "int"
+                    ],
+                    "name": "numberOfDependentAdults",
+                    "default": null,
+                    "doc": "Number of dependent adults in the household."
+                  }
+                ],
+                "doc": "Data about person's household."
+              }
+            ],
+            "name": "household",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "PersonsApartment",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "ownershipCode",
+                    "default": null,
+                    "doc": "Type of apartment ownership using code retrieved from GET /datasets/codebooks/property-ownerships."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "residencyFromDate",
+                    "default": null
+                  }
+                ],
+                "doc": "Information about person's apartment."
+              }
+            ],
+            "name": "apartment",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "__DEFAULT__",
+                "name": "PersonLifecycleState",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "symbols": [
+                  "__DEFAULT__",
+                  "ACTIVE",
+                  "DECEASED"
+                ],
+                "doc": "Person's statuses related to a person's lifecycle."
+              }
+            ],
+            "name": "lifecycleState",
+            "default": null,
+            "doc": "Person's statuses related to a person's lifecycle."
+          },
+          {
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "name": "isUnderage",
+            "default": null,
+            "doc": "A flag which indicates if a person is underage. In some cases it's not possible to derive it from a birth date, e.g. different law, young parents made adults before 18 yo etc."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "PepData",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "__DEFAULT__",
+                        "name": "PepStatus",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "__DEFAULT__",
+                          "PEP",
+                          "RELATED_PEP",
+                          "UNDER_INVESTIGATION",
+                          "NO_PEP"
+                        ]
+                      }
+                    ],
+                    "name": "status",
+                    "default": null,
+                    "doc": "PEP status indicating politically exposed person status. Possible values:\n        - **PEP** - Politically Exposed Person.\n        - **RELATED_PEP** - Related Politically Exposed Person.\n        - **UNDER_INVESTIGATION** - Person under investigation for politically exposed status.\n        - **NO_PEP** - Not a Politically Exposed Person."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "__DEFAULT__",
+                        "name": "PepSource",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "__DEFAULT__",
+                          "WLM",
+                          "MANUAL",
+                          "INHERITED",
+                          "NONE"
+                        ]
+                      }
+                    ],
+                    "name": "source",
+                    "default": null,
+                    "doc": "Source of the PEP status. Possible values:\n        - **WLM** - Source from the World-Check database.\n        - **MANUAL** - Manually identified PEP status.\n        - **INHERITED** - Inherited PEP status.\n        - **NONE** - No source identified."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "__DEFAULT__",
+                        "name": "PepScope",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "__DEFAULT__",
+                          "DOMESTIC",
+                          "FOREIGN"
+                        ]
+                      }
+                    ],
+                    "name": "scope",
+                    "default": null,
+                    "doc": "Scope of the PEP status. Possible values:\n        - **DOMESTIC** - PEP status within domestic scope.\n        - **FOREIGN** - PEP status within foreign scope."
+                  }
+                ]
+              }
+            ],
+            "name": "pepData",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "TaxData",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "taxResidencyCountryCode",
+                    "default": null,
+                    "doc": "ISO 3166 ALPHA2 country code."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "__DEFAULT__",
+                        "name": "CrsStatus",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "__DEFAULT__",
+                          "ACCEPTED",
+                          "REJECTED"
+                        ]
+                      }
+                    ],
+                    "name": "crsStatus",
+                    "default": null,
+                    "doc": "Defines the status of a Common Reporting Standard."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isVatPayer",
+                    "default": null,
+                    "doc": "A flag which indicates if a party is a VAT tax payer."
+                  }
+                ]
+              }
+            ],
+            "name": "taxData",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "W8BenValidityRecord",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "validFrom",
+                    "default": null,
+                    "doc": "Date when the W-8BEN form becomes valid."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "validTo",
+                    "default": null,
+                    "doc": "Expiration date of the W-8BEN form."
+                  }
+                ]
+              }
+            ],
+            "name": "w8BenValidity",
+            "default": null,
+            "doc": "Information about the validity of the W-8BEN form."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "com.rbinternational.rice.customers.common.CommonCommunicationChannel"
+              }
+            ],
+            "name": "communicationChannels",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "com.rbinternational.rice.customers.common.CommonAddress"
+              }
+            ],
+            "name": "addresses",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "groupName",
+            "default": null,
+            "doc": "A name of the group."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "OTHER",
+                "name": "PartyStatus",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "symbols": [
+                  "ACTIVE",
+                  "INACTIVE",
+                  "REMOVED",
+                  "CEASED",
+                  "IN_LIQUIDATION",
+                  "IN_BANKRUPTCY",
+                  "OTHER"
+                ]
+              }
+            ],
+            "name": "partyStatus",
+            "default": null,
+            "doc": "Defines the status of the party: **ACTIVE** Active. **INACTIVE** Inactive (ceased to conduct business activity) and exists in the registry. **REMOVED** Inactive and removed from commercial registry. **IN_LIQUIDATION** In liquidation. **IN_BANKRUPTCY** In bankruptcy or in bankruptcy proceedings. - **OTHER** Other status, data about a party is unreliable. The internal status is invalid."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "AmlData",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": {
+                      "type": "array",
+                      "items": {
+                        "type": "enum",
+                        "default": "OTHER",
+                        "name": "FundsSource",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "RECEIPTS",
+                          "DONATION",
+                          "SHAREHOLDERS",
+                          "LOANS",
+                          "INHERITANCE",
+                          "SALARIES",
+                          "ACTIVE_SALES",
+                          "GOODS_SALES",
+                          "DUES",
+                          "FEES",
+                          "SECURITY_TRADINGS",
+                          "ABROAD_INFLOWS",
+                          "SAVINGS",
+                          "OTHER"
+                        ],
+                        "doc": "Defines the source of the party's funds\n\t- **RECEIPTS** Current activity receipts.\n\t- **DONATION** Donation or sponsorship.\n\t- **SHAREHOLDERS** Impr shareholders or credit companies.\n\t- **LOANS** Loans.\n\t- **INHERITANCE** Inheritance or court decision.\n\t- **SALARIES** Salaries.\n\t- **ACTIVE_SALES** Active sales.\n\t- **GOODS_SALES** Sales of movable or immovable goods.\n\t- **DUES** Dues.\n\t- **FEES** Additional fees e.g. one-time contract.\n\t- **SECURITY_TRADINGS** Security tradings.\n\t- **ABROAD_INFLOWS** Inflows from other countries.\n\t- **SAVINGS** Savings.\n\t- **OTHER** Other."
+                      }
+                    },
+                    "name": "fundsSources"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "record",
+                        "name": "ExpectedTransactions",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "fields": [
+                          {
+                            "type": [
+                              "null",
+                              "int"
+                            ],
+                            "name": "number",
+                            "default": null,
+                            "doc": "A number of transactions."
+                          },
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "period",
+                            "default": null,
+                            "doc": "A time period."
+                          }
+                        ],
+                        "doc": "Expected number of transactions in a period of time, which the customer intends to do."
+                      }
+                    ],
+                    "name": "expectedTransactions",
+                    "default": null,
+                    "doc": "Expected number of transactions in a period of time, which the customer intends to do."
+                  }
+                ]
+              }
+            ],
+            "name": "amlData",
+            "default": null,
+            "doc": "An object grouping all AML (Anti Money Laundering) data."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "__DEFAULT__",
+                "name": "RelationStage",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "symbols": [
+                  "__DEFAULT__",
+                  "PARTNER",
+                  "CUSTOMER",
+                  "PROSPECT"
+                ],
+                "doc": "Defines a stage of relation between a customer and a bank.\n\t- **PARTNER** A partner registered in Bank's systems - e.g. a 3rd party on a partnership agreement.\n\t- **CUSTOMER** A customer.\n\t- **PROSPECT** A prospect, i.e. a potential customer."
+              }
+            ],
+            "name": "relationStage",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "name": "isSubjectToFATCA",
+            "default": null,
+            "doc": "Indicates if the party is a subject to FATCA."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "UNKNOWN",
+                "name": "RiskRating",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "symbols": [
+                  "LOW",
+                  "MEDIUM",
+                  "HIGH",
+                  "UNKNOWN"
+                ],
+                "doc": "The party risk rating."
+              }
+            ],
+            "name": "riskRating",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "name": "hasDirectBusinessRelationship",
+            "default": null,
+            "doc": "A flag showing that the party has direct business relation with the bank (e.g. having an account or a loan)."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "com.rbinternational.rice.customers.personasparty.PartyResidency"
+              }
+            ],
+            "name": "residency",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "enum",
+                  "default": "__DEFAULT__",
+                  "name": "BankToPartyRelationship",
+                  "namespace": "com.rbinternational.rice.customers.personasparty",
+                  "symbols": [
+                    "__DEFAULT__",
+                    "SAVINGS_INVESTMENTS",
+                    "OPERATIONS",
+                    "FINANCING",
+                    "FX",
+                    "BGS_LCS",
+                    "CARDS_ACCEPTANCE",
+                    "CASH_ADMINISTRATION",
+                    "INVESTMENTS",
+                    "SALARY_PAYMENTS"
+                  ],
+                  "doc": "A list of relationships between a bank and a customer."
+                }
+              }
+            ],
+            "name": "bankToPartyRelationships",
+            "default": null,
+            "doc": "An array of relationships between a bank and a customer"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "countryOfRisk",
+            "default": null,
+            "doc": "Country Of Risk Link, BDM property"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "customerProfitCenter",
+            "default": null,
+            "doc": "Customer Profit Center Link,  BDM property"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "cognosControllerCode",
+            "default": null,
+            "doc": "Cognos Controllercode Number,  BDM property"
+          },
+          {
+            "docs": "Past Due Date, BDM property",
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "date"
+              }
+            ],
+            "name": "pastDueDate",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "correspondingGlobalCustomer",
+            "default": null,
+            "doc": "Corresponding Global Customer Link,  BDM property"
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "PersonInternationalIdentification",
+                "namespace": "com.rbinternational.rice.customers.personasparty",
+                "fields": [
+                  {
+                    "type": {
+                      "type": "enum",
+                      "default": "__DEFAULT__",
+                      "name": "PersonalInternationalIdentificationType",
+                      "namespace": "com.rbinternational.rice.customers.personasparty",
+                      "symbols": [
+                        "__DEFAULT__",
+                        "TAX_ID",
+                        "PASSPORT_NUMBER",
+                        "DRIVING_LICENSE_NUMBER",
+                        "IDENTITY_CARD_NUMBER",
+                        "PERSONAL_NUMBER"
+                      ],
+                      "doc": "Contains a party common identification type. Possible values:\n        - **TAX_ID** A party's national tax identifier.\n        - **PASSPORT_NUMBER** A passport number.\n        - **DRIVING_LICENSE_NUMBER** A personal driving license number.\n        - **IDENTITY_CARD_NUMBER** A personal national identity plastic card number.\n        - **PERSONAL_NUMBER** A personal identification number (PIN) is a unique identifier assigned to individuals."
+                    },
+                    "name": "type",
+                    "doc": "A personal identification's type."
+                  },
+                  {
+                    "type": "string",
+                    "name": "value",
+                    "default": "A value of the identification type."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "validFrom",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "date"
+                      }
+                    ],
+                    "name": "validTo",
+                    "default": null
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "issuingAuthority",
+                    "default": null
+                  },
+                  {
+                    "reda": {
+                      "pattern": "[A-Z]{2}",
+                      "example": "SE"
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "issuingAuthorityCountryCode",
+                    "default": null,
+                    "doc": "ISO 3166 ALPHA2 country code."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "issuingAuthorityCity",
+                    "default": null,
+                    "doc": "A city name."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "comment",
+                    "default": null,
+                    "doc": "A free text comment."
+                  }
+                ]
+              }
+            },
+            "name": "internationalIdentifications"
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "PersonNationalityProfile",
+                  "namespace": "com.rbinternational.rice.customers.personasparty",
+                  "fields": [
+                    {
+                      "type": {
+                        "type": "enum",
+                        "default": "OTHER",
+                        "name": "PersonNationalityProfileType",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "RESIDENCY",
+                          "CITIZENSHIP",
+                          "NATIONALITY",
+                          "FISCAL_RESIDENCY",
+                          "CURRENCY_RESIDENCY",
+                          "RISK_COUNTRY",
+                          "OTHER"
+                        ],
+                        "doc": " - **RESIDENCY** Country of residency.\n          - **CITIZENSHIP** Citizenship.\n          - **NATIONALITY** Nationality.\n          - **FISCAL_RESIDENCY** Tax domicile.\n          - **CURRENCY_RESIDENCY** FX domicile.\n          - **RISK_COUNTRY** Country of risk.\n          - **OTHER** other country information."
+                      },
+                      "name": "type",
+                      "doc": "A person nationality profile type."
+                    },
+                    {
+                      "reda": {
+                        "pattern": "[A-Z]{2}",
+                        "example": "SE"
+                      },
+                      "type": "string",
+                      "name": "countryCode",
+                      "doc": "ISO 3166 ALPHA2 country code."
+                    }
+                  ],
+                  "doc": "This name suggests that the object provides a comprehensive profile of a person's nationality, including information on citizenship and residency."
+                }
+              }
+            ],
+            "name": "nationalityProfiles",
+            "default": null
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "PersonNationalIdentification",
+                  "namespace": "com.rbinternational.rice.customers.personasparty",
+                  "fields": [
+                    {
+                      "type": "string",
+                      "name": "type",
+                      "doc": "A person nationality profile type."
+                    },
+                    {
+                      "type": "string",
+                      "name": "value",
+                      "doc": "A value of the identification."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        {
+                          "type": "int",
+                          "logicalType": "date"
+                        }
+                      ],
+                      "name": "validFrom",
+                      "default": null,
+                      "doc": "A date when the identification was issued."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        {
+                          "type": "int",
+                          "logicalType": "date"
+                        }
+                      ],
+                      "name": "validTo",
+                      "default": null,
+                      "doc": "A date when the identification expires."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "issuingAuthority",
+                      "default": null,
+                      "doc": "An authority that issued the identification."
+                    },
+                    {
+                      "reda": {
+                        "pattern": "[A-Z]{2}",
+                        "example": "SE"
+                      },
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "issuingAuthorityCountryCode",
+                      "default": null,
+                      "doc": "ISO 3166 ALPHA2 country code."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "issuingAuthorityCity",
+                      "default": null,
+                      "doc": "A city name."
+                    }
+                  ],
+                  "doc": " A type of the identification."
+                }
+              }
+            ],
+            "name": "nationalIdentifications",
+            "default": null,
+            "doc": "An array of local/national identifications."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "TechnicalIdentifier",
+                  "namespace": "com.rbinternational.rice.customers.personasparty",
+                  "fields": [
+                    {
+                      "type": {
+                        "type": "enum",
+                        "default": "__DEFAULT__",
+                        "name": "TechnicalIdentifierType",
+                        "namespace": "com.rbinternational.rice.customers.personasparty",
+                        "symbols": [
+                          "__DEFAULT__",
+                          "LEGACY_PROSPECT_ID",
+                          "COCUNUT",
+                          "LEGACY_ID",
+                          "PROSPECT_ID",
+                          "PARTNER_ID",
+                          "CUSTOMER_ID",
+                          "RAM_ID"
+                        ],
+                        "doc": "A type of the technical system identifier. Possible values:\n        - **LEGACY_PROSPECT_ID** An NWU-specific identifier to be able to link the newly created prospect to an historic record in the local\n            CRM system.\n        - **COCUNUT** Tiger ID customer's RBI group id - tiger unique identifier.\n        - **LEGACY_ID** Other technical identifier from legacy system (e.g. Athena ID).\n        - **PROSPECT_ID** A prospect technical identifier.\n        - **PARTNER_ID** A partner technical identifier.\n        - **CUSTOMER_ID** A customer technical identifier.\n        - **RAM_ID** RAM_ID technical identifier."
+                      },
+                      "name": "type"
+                    },
+                    {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "value",
+                      "default": null,
+                      "doc": "A value of the technical ID."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "issuingSystem",
+                      "default": null,
+                      "doc": "A system name where the technical identifier was created."
+                    }
+                  ],
+                  "doc": "A technical system identifier, not used in the identification process."
+                }
+              }
+            ],
+            "name": "technicalIdentifiers",
+            "default": null,
+            "doc": "An array of technical identifiers."
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

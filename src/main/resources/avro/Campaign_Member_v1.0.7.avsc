@@ -1,0 +1,682 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "crm",
+    "businessSubdomain": "campaignMember",
+    "topicVersion": "1",
+    "topicName": "*.crm.campaignMember.V1",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-eda-support@rbinternational.com",
+    "created": "2024-01-25T15:11:46+00:00",
+    "eventNames": [
+      "CAMPAIGN_MEMBER_CREATED",
+      "CAMPAIGN_MEMBER_UPDATED",
+      "CAMPAIGN_MEMBER_DELETED"
+    ],
+    "defaultEventName": "CAMPAIGN_MEMBER_UPDATED",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "campaigns/v1.0::GET/campaign-management/customers/{customerId}/campaigns/{campaignId}"
+  },
+  "name": "CampaignMember",
+  "namespace": "com.rbinternational.rice.crm.campaignMember",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "CampaignMemberMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.crm.campaignMember",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "CAMPAIGN_MEMBER_CREATED",
+                "CAMPAIGN_MEMBER_UPDATED",
+                "CAMPAIGN_MEMBER_DELETED"
+              ],
+              "default": "CAMPAIGN_MEMBER_UPDATED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone. in UTC offset",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "CampaignMemberPayload",
+        "namespace": "com.rbinternational.rice.crm.campaignMember",
+        "fields": [
+          {
+            "reda": {
+              "maxLength": 64
+            },
+            "type": "string",
+            "name": "customerId",
+            "doc": "Customer ID"
+          },
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": "string",
+            "name": "campaignId",
+            "doc": "A unique identifier of a campaign."
+          },
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "name",
+            "default": null,
+            "doc": "Name of a campaign."
+          },
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "description",
+            "default": null,
+            "doc": "Description of a campaign."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "TaskCustomer",
+                "namespace": "com.rbinternational.rice.crm.campaignMember",
+                "fields": [
+                  {
+                    "reda": {
+                      "maxLength": 128
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "name",
+                    "default": null,
+                    "doc": "Describes shortly campaign benefit(s)."
+                  },
+                  {
+                    "reda": {
+                      "maxLength": 128
+                    },
+                    "type": "string",
+                    "name": "description",
+                    "doc": "Provides additional details for campaign benefit(s)."
+                  }
+                ],
+                "doc": "A potential customer's data."
+              }
+            ],
+            "name": "benefit",
+            "default": null,
+            "doc": "Contains campaign benefit(s) details."
+          },
+          {
+            "type": {
+              "type": "enum",
+              "name": "CampaignStatus",
+              "namespace": "com.rbinternational.rice.crm.campaignMember",
+              "symbols": [
+                "DRAFT",
+                "ACTIVE",
+                "INACTIVE",
+                "CANCELED",
+                "FINISHED"
+              ],
+              "doc": "The current status of a campaign: - **DRAFT** The initial status. A campaign has been created but not yet ready for activation. - **ACTIVE** The campaign is currently active and open for customer engagement. - **INACTIVE** The campaign is currently not active, therefore not open for customer engagement. - **CANCELED** The campaign has been canceled, meaning finished before the end date.- **FINISHED** The campaign has ended and therefore no longer active."
+            },
+            "name": "status",
+            "doc": "The current status of a campaign."
+          },
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "type",
+            "default": null,
+            "doc": "The type of a campaign."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "name": "OfferType",
+                "namespace": "com.rbinternational.rice.crm.campaignMember",
+                "symbols": [
+                  "PRE_APPROVED",
+                  "INVITATION"
+                ],
+                "doc": "Describes is the offer in a campaign type. - **PRE_APPROVED** This means that the offer for a customer has been already  pre-approved offer. E.g. Loan offers which are pre-approved from the Bank to some trusted clients.- **INVITATION** This means that an offer is ready but customer must come to the branch (possibly) bring some documentation."
+              }
+            ],
+            "name": "offerType",
+            "default": null,
+            "doc": "Describes is the offer in a campaign type."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "date"
+              }
+            ],
+            "name": "startDate",
+            "default": null,
+            "doc": "Campaign's start date determines when customers can start to engage with it."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "date"
+              }
+            ],
+            "name": "endDate",
+            "default": null,
+            "doc": "Campaign's end date determines until when campaign is open for engagement"
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "Offering",
+                  "namespace": "com.rbinternational.rice.crm.campaignMember",
+                  "fields": [
+                    {
+                      "type": {
+                        "type": "enum",
+                        "name": "OfferingOfferType",
+                        "namespace": "com.rbinternational.rice.crm.campaignMember",
+                        "symbols": [
+                          "PRODUCT",
+                          "SERVICE"
+                        ],
+                        "doc": "Offer type. Should have value equal to PRODUCT."
+                      },
+                      "name": "offerType",
+                      "doc": "Offer type. Should have value equal to PRODUCT."
+                    },
+                    {
+                      "reda": {
+                        "maxLength": 64
+                      },
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "name",
+                      "default": null,
+                      "doc": "A name of a service."
+                    },
+                    {
+                      "reda": {
+                        "maxLength": 256
+                      },
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "description",
+                      "default": null,
+                      "doc": "Extended description of a service."
+                    },
+                    {
+                      "reda": {
+                        "maxLength": 64
+                      },
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "name": "code",
+                      "default": null,
+                      "doc": "An unique code of a product. It can be used as the product identifier."
+                    },
+                    {
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "map",
+                            "values": "string"
+                          }
+                        }
+                      ],
+                      "name": "features",
+                      "default": null,
+                      "doc": "A list of product features."
+                    }
+                  ]
+                }
+              }
+            ],
+            "name": "offerings",
+            "default": null,
+            "doc": "A list of offerings (products and/or services) offered through a campaign."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "enum",
+                  "name": "CampaignChannel",
+                  "namespace": "com.rbinternational.rice.crm.campaignMember",
+                  "symbols": [
+                    "BRANCH",
+                    "CALL_CENTER",
+                    "MOBILE_BANKING",
+                    "INTERNET_BANKING",
+                    "SMS",
+                    "PUSH",
+                    "EMAIL",
+                    "LETTER",
+                    "WEBSITE",
+                    "ATM",
+                    "DSA",
+                    "REMOTE_RM"
+                  ],
+                  "doc": "A unique identifier of the channel from which the campaign is being communicated to customer, or through which customer is engaging in the campaign."
+                }
+              }
+            ],
+            "name": "channels",
+            "default": null,
+            "doc": "A unique identifier of the channel from which the campaign is being communicated to customer, or through which customer is engaging in the campaign."
+          },
+          {
+            "reda": {
+              "maxLength": 128
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "customerJourneyId",
+            "default": null,
+            "doc": "A unique identifier of a customer journey. This is used as unique identifier in cases when a customer can enter a campaign more than once in different periods."
+          },
+          {
+            "type": [
+              "null",
+              "int"
+            ],
+            "name": "order",
+            "default": null,
+            "doc": "A unique identifier of a customer journey. This is used as unique identifier in cases when a customer can enter a campaign more than once in different periods."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "CRMObject",
+                  "namespace": "com.rbinternational.rice.crm.campaignMember",
+                  "fields": [
+                    {
+                      "type": [
+                        "null",
+                        {
+                          "type": "enum",
+                          "name": "CRMObjectObject",
+                          "namespace": "com.rbinternational.rice.crm.campaignMember",
+                          "symbols": [
+                            "OPPORTUNITY",
+                            "TASK",
+                            "LEAD",
+                            "CASE"
+                          ],
+                          "doc": "CRM object to be created. - **OPPORTUNITY** An Opportunity represents a potential sales deal or revenue-generating event. - **TASK** A Task is a specific action or to-do item that needs to be completed as part of a sales or customer service process. - **LEAD** A Lead is a record that represents a potential customer or prospect who has shown interest in a company's products or services. - **CASE** A Case is used for tracking and managing customer inquiries, issues, or support requests."
+                        }
+                      ],
+                      "name": "object",
+                      "default": null,
+                      "doc": "CRM object to be created."
+                    },
+                    {
+                      "reda": {
+                        "maxLength": 256
+                      },
+                      "type": [
+                        "null",
+                        {
+                          "type": "record",
+                          "name": "CRMObjectObjectAssignedTo",
+                          "namespace": "com.rbinternational.rice.crm.campaignMember",
+                          "fields": [
+                            {
+                              "type": {
+                                "type": "enum",
+                                "name": "CRMObjectAssignedToType",
+                                "namespace": "com.rbinternational.rice.crm.campaignMember",
+                                "symbols": [
+                                  "USER",
+                                  "GROUP"
+                                ],
+                                "doc": "Type of CRMObject Assigned To."
+                              },
+                              "name": "type",
+                              "doc": "Type of SF object is assigned to."
+                            },
+                            {
+                              "reda": {
+                                "maxLength": 64
+                              },
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "name": "email",
+                              "default": null,
+                              "doc": "An email address of the user to whom a SF object is assigned to."
+                            },
+                            {
+                              "reda": {
+                                "maxLength": 512
+                              },
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "name": "queueName",
+                              "default": null
+                            }
+                          ]
+                        }
+                      ],
+                      "name": "assignedTo",
+                      "default": null,
+                      "doc": "Information about a user of group of users to whom a Sales Force object is assigned to."
+                    }
+                  ]
+                }
+              }
+            ],
+            "name": "crmObjects",
+            "default": null,
+            "doc": "Information about the CRM object to be created as result of particular customer reaction to a campaign."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "CustomerCampaignActivity",
+                "namespace": "com.rbinternational.rice.crm.campaignMember",
+                "fields": [
+                  {
+                    "type": [
+                      "null",
+                      "com.rbinternational.rice.crm.campaignMember.CampaignChannel"
+                    ],
+                    "name": "channel",
+                    "default": null,
+                    "doc": "A unique identifier of the channel from which the campaign is being communicated to customer, or through which customer is engaging in the campaign."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "record",
+                        "name": "CustomerBranch",
+                        "namespace": "com.rbinternational.rice.crm.campaignMember",
+                        "fields": [
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "code",
+                            "default": null
+                          }
+                        ],
+                        "doc": "Information for the branch where this customer interaction happened (if it happened in a branch)."
+                      }
+                    ],
+                    "name": "branch",
+                    "default": null,
+                    "doc": "Information for the branch where this customer interaction happened (if it happened in a branch)."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "long",
+                        "logicalType": "timestamp-millis"
+                      }
+                    ],
+                    "name": "dateTime",
+                    "default": null,
+                    "doc": "Date and time when the reaction occurred"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "enum",
+                          "name": "CampaignResponse",
+                          "namespace": "com.rbinternational.rice.crm.campaignMember",
+                          "symbols": [
+                            "NEUTRAL",
+                            "ACCEPTED",
+                            "REJECTED"
+                          ],
+                          "doc": "An action of a customer for a specific campaign which is used to assess the success of the campaign: - **NEUTRAL** The customer has started engagement in the campaign, but has not reached a decision yet. E.g. customer needs additional information before a decision. - **ACCEPTED** The customer has taken the desired action aligned with the goals of the of the campaign. E.g. customer has purchased the offered product. - **REJECTED** The customer has not taken the desired action, and therefore the campaign has not succeeded for this customer."
+                        }
+                      }
+                    ],
+                    "name": "response",
+                    "default": null,
+                    "doc": "An action of a customer for a specific campaign which is used to assess the success of the campaign."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "record",
+                        "name": "ResponseDetails",
+                        "namespace": "com.rbinternational.rice.crm.campaignMember",
+                        "fields": [
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "text",
+                            "default": null,
+                            "doc": "Contains exact text with which a customer reacted to a campaign. For example this can be the text in the button that customer clicked."
+                          },
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "statusCode",
+                            "default": null,
+                            "doc": "Contains a response status, that is used to define the nature of the response or some action that should be triggered based on it."
+                          }
+                        ],
+                        "doc": "Information about customer response to a campaign."
+                      }
+                    ],
+                    "name": "responseDetails",
+                    "default": null,
+                    "doc": "Information about customer response to a campaign."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "contactStatusCode",
+                    "default": null,
+                    "doc": "Contains a contact status, that is used to define status of the contacted customer/prospect for this."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "record",
+                        "name": "CustomerOperator",
+                        "namespace": "com.rbinternational.rice.crm.campaignMember",
+                        "fields": [
+                          {
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "name": "email",
+                            "default": null
+                          }
+                        ],
+                        "doc": "An operator email with whom a customer contacted."
+                      }
+                    ],
+                    "name": "operator",
+                    "default": null,
+                    "doc": "An operator email with whom a customer contacted."
+                  }
+                ],
+                "doc": "An object containing details about an interaction with a campaign whether it is directly from a customer or an intermediate party (eg. branch manager)."
+              }
+            ],
+            "name": "lastActivity",
+            "default": null,
+            "doc": "An object containing details about an interaction with a campaign whether it is directly from a customer or an intermediate party (eg. branch manager)."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "map",
+                  "values": "string"
+                }
+              }
+            ],
+            "name": "otherProperties",
+            "default": null,
+            "doc": "A list of other customer's campaign properties."
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

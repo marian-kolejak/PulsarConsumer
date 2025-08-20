@@ -1,0 +1,334 @@
+{
+    "messages": [{
+            "metadata": {
+                "eventId": "21268920",
+                "eventName": "PRIVATE_INDIVIDUAL_UPDATED",
+                "eventOwner": "TBSK",
+                "sourceUnit": "TBSK",
+                "sourceApplication": "SR",
+                "eventTimezoneOffset": "UTC/GMT +2 hours",
+                "traceId": "6646630220722_V83",
+                "parentTraceId": "6646630220722_V83",
+                "parentEventId": "6646630220722_V83",
+                "businessDomain": "Customers.PrivateIndividual",
+                "businessCapability": "Customers.PrivateIndividual",
+                "schemaName": "com.rbinternational.rice.customers.privateindividual.PrivateIndividual",
+                "schemaVersion": "1.3.5",
+                "eventCreatedAt": 1754675011016
+            },
+            "customer": {
+                "customerId": "6646630220722",
+                "person": {
+                    "name": {
+                        "prefix": "Dr.",
+                        "firstName": "Ferdinand",
+                        "lastName": "Mrkvička",
+                        "middleName": null,
+                        "suffix": "PhD.",
+                        "fullName": "Dr. Ferdinand Mrkvička PhD."
+                    },
+                    "nameInLatin": null,
+                    "birth": {
+                        "date": 3652,
+                        "place": "Prešov",
+                        "country": "SK",
+                        "birthName": null
+                    },
+                    "nameDay": null,
+                    "employmentType": "PERMANENT",
+                    "employment": [],
+                    "totalWorkingMonths": null,
+                    "maritalStatus": "MARRIED",
+                    "childrenNumber": 4,
+                    "hobby": null,
+                    "gender": "MALE",
+                    "identifications": [{
+                            "type": "SK_BIRTH_NUMBER",
+                            "number": "8001015319",
+                            "validFrom": null,
+                            "validTo": null
+                        }, {
+                            "type": "TAX_ID",
+                            "number": "8001015319",
+                            "validFrom": null,
+                            "validTo": null
+                        }, {
+                            "type": "PERSONAL_NUMBER",
+                            "number": "6646630220722",
+                            "validFrom": null,
+                            "validTo": null
+                        }, {
+                            "type": "SK_ECHID",
+                            "number": "3403297",
+                            "validFrom": null,
+                            "validTo": null
+                        }
+                    ],
+                    "nationalities": null,
+                    "languages": ["SK"],
+                    "citizenships": ["SK"],
+                    "primaryParent": null,
+                    "secondaryParent": null,
+                    "income": {
+                        "amount": "54000",
+                        "source": "EMP",
+                        "currency": "EUR"
+                    },
+                    "additionalIncomes": null,
+                    "documents": [{
+                            "id": "6646630225442",
+                            "serialNumber": "CR123456",
+                            "type": "PERSONAL_ID_CARD",
+                            "issuedOn": 19358,
+                            "validUntil": 23011,
+                            "issuingAuthority": null,
+                            "country": "SK"
+                        }, {
+                            "id": "6646630225602",
+                            "serialNumber": "XX62184579",
+                            "type": "OTHER",
+                            "issuedOn": 19723,
+                            "validUntil": 21550,
+                            "issuingAuthority": null,
+                            "country": "SK"
+                        }, {
+                            "id": "6646630225522",
+                            "serialNumber": "PS251487",
+                            "type": "PERSONAL_ID_PASSPORT",
+                            "issuedOn": 18993,
+                            "validUntil": 20819,
+                            "issuingAuthority": null,
+                            "country": "SK"
+                        }
+                    ],
+                    "isIdentified": true,
+                    "role": null,
+                    "occupation": null,
+                    "educationLevel": {
+                        "code": "HIG",
+                        "name": "Vysokoškolské"
+                    },
+                    "isPep": false,
+                    "turnover": null,
+                    "isLegallyIncompetent": false,
+                    "household": {
+                        "esaCategory": "EMPLOYEE",
+                        "numberOfEmployees": null,
+                        "numberOfDependentAdults": null
+                    },
+                    "apartment": null,
+                    "taxData": {
+                        "taxResidencyCountryCode": "SK",
+                        "crsStatus": "ACCEPTED",
+                        "isVatPayer": false
+                    },
+                    "communicationChannels": [{
+                            "type": "MOBILE_PHONE",
+                            "isPrimary": true,
+                            "isProvidedByCustomer": null,
+                            "status": "VALID",
+                            "phone": {
+                                "phone": "+421945987653",
+                                "countryPhonePrefix": null,
+                                "activeNotificationChannel": "SMS",
+                                "purpose": null
+                            },
+                            "email": null,
+                            "websiteLink": null,
+                            "facebookLink": null,
+                            "instagramLink": null,
+                            "linkedinLink": null,
+                            "mobilePushNotification": null
+                        }, {
+                            "type": "MOBILE_PHONE",
+                            "isPrimary": false,
+                            "isProvidedByCustomer": null,
+                            "status": "VALID",
+                            "phone": {
+                                "phone": "+421943185241",
+                                "countryPhonePrefix": null,
+                                "activeNotificationChannel": null,
+                                "purpose": null
+                            },
+                            "email": null,
+                            "websiteLink": null,
+                            "facebookLink": null,
+                            "instagramLink": null,
+                            "linkedinLink": null,
+                            "mobilePushNotification": null
+                        }, {
+                            "type": "EMAIL",
+                            "isPrimary": true,
+                            "isProvidedByCustomer": null,
+                            "status": "VALID",
+                            "phone": null,
+                            "email": {
+                                "email": "fero_mrkvicka@azet.sk",
+                                "activeNotificationChannel": "EMAIL",
+                                "purpose": null
+                            },
+                            "websiteLink": null,
+                            "facebookLink": null,
+                            "instagramLink": null,
+                            "linkedinLink": null,
+                            "mobilePushNotification": null
+                        }, {
+                            "type": "EMAIL",
+                            "isPrimary": false,
+                            "isProvidedByCustomer": null,
+                            "status": "VALID",
+                            "phone": null,
+                            "email": {
+                                "email": "fero_mrkva@yahoo.com",
+                                "activeNotificationChannel": null,
+                                "purpose": null
+                            },
+                            "websiteLink": null,
+                            "facebookLink": null,
+                            "instagramLink": null,
+                            "linkedinLink": null,
+                            "mobilePushNotification": null
+                        }
+                    ],
+                    "addresses": [{
+                            "addressType": "LEGAL",
+                            "country": "SK",
+                            "county": null,
+                            "streetType": null,
+                            "street": "Železničiarska",
+                            "streetCode": null,
+                            "streetNumber": "3799/31",
+                            "doorNumber": null,
+                            "floorNumber": null,
+                            "staircaseNumber": null,
+                            "city": "Prešov",
+                            "cityCode": null,
+                            "village": null,
+                            "villageCode": null,
+                            "neighborhood": null,
+                            "neighborhoodCode": null,
+                            "postalCode": "080 01",
+                            "districts": null,
+                            "addressLines": null,
+                            "isProvidedByCustomer": null
+                        }, {
+                            "addressType": "CORRESPONDENCE",
+                            "country": "SK",
+                            "county": null,
+                            "streetType": null,
+                            "street": "Železničiarska",
+                            "streetCode": null,
+                            "streetNumber": "3799/31",
+                            "doorNumber": null,
+                            "floorNumber": null,
+                            "staircaseNumber": null,
+                            "city": "Prešov",
+                            "cityCode": null,
+                            "village": null,
+                            "villageCode": null,
+                            "neighborhood": null,
+                            "neighborhoodCode": null,
+                            "postalCode": "080 01",
+                            "districts": null,
+                            "addressLines": null,
+                            "isProvidedByCustomer": null
+                        }
+                    ],
+                    "groupName": null,
+                    "partyStatus": "ACTIVE",
+                    "amlData": {
+                        "fundsSources": ["SALARIES"]
+                    },
+                    "relationStage": "CUSTOMER",
+                    "partyId": "6646630220722",
+                    "isSubjectToFATCA": false,
+                    "riskRating": "LOW",
+                    "hasDirectBusinessRelationship": null,
+                    "residency": [{
+                            "countryCode": "SK",
+                            "isPermanent": true,
+                            "isForeign": false
+                        }
+                    ],
+                    "countryOfRisk": null,
+                    "customerProfitCenter": null,
+                    "cognosControllerCode": null,
+                    "pastDueDate": null,
+                    "correspondingGlobalCustomer": null
+                },
+                "status": "ACTIVE",
+                "segments": {
+                    "TBSK_CG": "1"
+                },
+                "bankRelatedInfo": {
+                    "dealerName": null,
+                    "dealerId": null,
+                    "relationshipManagerName": "Nemá prideleného RM",
+                    "relationshipManagerId": null,
+                    "defaultBranchCode": "82059",
+                    "regionName": null,
+                    "regionCode": null,
+                    "regionEmail": null
+                },
+                "productsOfInterest": null,
+                "isBehaviourSuspicious": null,
+                "leadSource": null,
+                "hasDepositGuaranteed": true,
+                "isEnrolledRemotely": false,
+                "isJobHqOffshore": null,
+                "consents": [{
+                        "consentSubject": "MARKETING",
+                        "consentCode": "BRANCH_INBOUND_MKT_CONSENT",
+                        "consentName": "Consent for marketing via inbound call from customer or when customer comes to the branch",
+                        "consentValue": true,
+                        "capturedDate": null,
+                        "consentVersion": null
+                    }, {
+                        "consentSubject": "MARKETING",
+                        "consentCode": "BRANCH_OUTBOUND_MKT_CONSENT",
+                        "consentName": "Consent for marketing via outbound call",
+                        "consentValue": true,
+                        "capturedDate": null,
+                        "consentVersion": null
+                    }, {
+                        "consentSubject": "MARKETING",
+                        "consentCode": "EMAIL_MKT_CONSENT",
+                        "consentName": "Consent for sending marketing email",
+                        "consentValue": true,
+                        "capturedDate": null,
+                        "consentVersion": null
+                    }, {
+                        "consentSubject": "MARKETING",
+                        "consentCode": "IB_MOB_MKT_CONSENT",
+                        "consentName": "Consent for marketing in internet banking / mobile app",
+                        "consentValue": true,
+                        "capturedDate": null,
+                        "consentVersion": null
+                    }, {
+                        "consentSubject": "MARKETING",
+                        "consentCode": "LETTER_MKT_CONSENT",
+                        "consentName": "Consent for sending marketing letter",
+                        "consentValue": true,
+                        "capturedDate": null,
+                        "consentVersion": null
+                    }, {
+                        "consentSubject": "MARKETING",
+                        "consentCode": "SMS_MKT_CONSENT",
+                        "consentName": "Consent for sending marketing sms",
+                        "consentValue": true,
+                        "capturedDate": null,
+                        "consentVersion": null
+                    }, {
+                        "consentSubject": "MARKETING",
+                        "consentCode": "TBG",
+                        "consentName": "Marketing consent for Tatrabanka group except Tatrabanka",
+                        "consentValue": true,
+                        "capturedDate": null,
+                        "consentVersion": null
+                    }
+                ],
+                "gamsClassifications": null
+            }
+        }
+    ]
+}

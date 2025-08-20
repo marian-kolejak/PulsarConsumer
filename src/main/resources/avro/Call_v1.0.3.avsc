@@ -1,0 +1,651 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "contactcenter",
+    "businessSubdomain": "call",
+    "topicVersion": "3",
+    "topicName": "*.contactcenter.call.V3",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-06-12T07:54:41+00:00",
+    "eventNames": [
+      "CALL_UPDATED",
+      "CALL_CANCELLED",
+      "CALL_FINISHED",
+      "CALL_LOGGED"
+    ],
+    "defaultEventName": "CALL_UPDATED",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "contact-center/v0.1::"
+  },
+  "name": "Call",
+  "namespace": "com.rbinternational.rice.contactcenter.call",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "CallMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.contactcenter.call",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "CALL_UPDATED",
+                "CALL_CANCELLED",
+                "CALL_FINISHED",
+                "CALL_LOGGED"
+              ],
+              "default": "CALL_UPDATED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "CallPayload",
+        "namespace": "com.rbinternational.rice.contactcenter.call",
+        "fields": [
+          {
+            "reda": {
+              "maxLength": 50
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "callId",
+            "default": null,
+            "doc": "The identifier of a call."
+          },
+          {
+            "reda": {
+              "minLength": 1,
+              "maxLength": 35,
+              "pattern": "^[+()-0-9]*$",
+              "example": "+48 601111222"
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "phoneNumber",
+            "default": null,
+            "doc": "A phone number."
+          },
+          {
+            "reda": {
+              "maxLength": 100
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "referenceId",
+            "default": null,
+            "doc": "A unique reference which allows e.g. tracking the call, correlating the phone call with responses that are sent via events etc."
+          },
+          {
+            "type": {
+              "type": "record",
+              "name": "PartyRole",
+              "namespace": "com.rbinternational.rice.contactcenter.call",
+              "fields": [
+                {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "partyId",
+                  "default": null,
+                  "doc": "The unique identifier from the origination system."
+                },
+                {
+                  "type": {
+                    "type": "enum",
+                    "default": "__DEFAULT__",
+                    "name": "PartyRoleType",
+                    "namespace": "com.rbinternational.rice.contactcenter.call",
+                    "symbols": [
+                      "PROSPECT",
+                      "CUSTOMER",
+                      "__DEFAULT__"
+                    ],
+                    "doc": "Enum values for party role."
+                  },
+                  "name": "partyRoleType"
+                },
+                {
+                  "type": {
+                    "type": "record",
+                    "name": "Party",
+                    "namespace": "com.rbinternational.rice.contactcenter.call",
+                    "fields": [
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "firstName",
+                        "default": null,
+                        "doc": "A party's first name."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "lastName",
+                        "default": null,
+                        "doc": "A party's last name."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "personalId",
+                        "default": null,
+                        "doc": "Personal ID of the party."
+                      },
+                      {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "name": "fullName",
+                        "default": null,
+                        "doc": "Full name of the legal entity."
+                      },
+                      {
+                        "type": {
+                          "type": "enum",
+                          "default": "__DEFAULT__",
+                          "name": "PartyType",
+                          "namespace": "com.rbinternational.rice.contactcenter.call",
+                          "symbols": [
+                            "PERSON",
+                            "LEGAL_ENTITY",
+                            "__DEFAULT__"
+                          ],
+                          "doc": "Type of the party."
+                        },
+                        "name": "partyType",
+                        "doc": "Details of the party."
+                      }
+                    ]
+                  },
+                  "name": "party"
+                }
+              ]
+            },
+            "name": "partyRole",
+            "doc": "Details of the party role."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "Employee",
+                "namespace": "com.rbinternational.rice.contactcenter.call",
+                "fields": [
+                  {
+                    "reda": {
+                      "maxLength": 80
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "businessUnit",
+                    "default": null,
+                    "doc": "Business unit of the Employee required for the call."
+                  },
+                  {
+                    "reda": {
+                      "maxLength": 40
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "userId",
+                    "default": null,
+                    "doc": "A user's unique identifier that uses the system."
+                  }
+                ]
+              }
+            ],
+            "name": "employee",
+            "default": null,
+            "doc": "Information about the Employee."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "OriginationInfo",
+                "namespace": "com.rbinternational.rice.contactcenter.call",
+                "fields": [
+                  {
+                    "reda": {
+                      "maxLength": 40
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "applicationId",
+                    "default": null,
+                    "doc": "Application which triggered the call."
+                  },
+                  {
+                    "reda": {
+                      "maxLength": 100
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "applicationReferenceId",
+                    "default": null,
+                    "doc": "The application ID/name, that triggered the flow."
+                  }
+                ]
+              }
+            ],
+            "name": "originationInfo",
+            "default": null,
+            "doc": "Information about the origination of the request."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "enum",
+                "default": "__DEFAULT__",
+                "name": "BrandCode",
+                "namespace": "com.rbinternational.rice.contactcenter.call",
+                "symbols": [
+                  "__DEFAULT__",
+                  "TBSK",
+                  "RBSK"
+                ]
+              }
+            ],
+            "name": "brandCode",
+            "default": null,
+            "doc": "A brandCode/nwuCode. E.g. in TBSK there are two brands, TBSK and RBSK."
+          },
+          {
+            "type": {
+              "type": "record",
+              "name": "CampaignDetail",
+              "namespace": "com.rbinternational.rice.contactcenter.call",
+              "fields": [
+                {
+                  "reda": {
+                    "maxLength": 250
+                  },
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "name",
+                  "default": null,
+                  "doc": "A name of the campaign."
+                },
+                {
+                  "reda": {
+                    "maxLength": 128,
+                    "example": "GT0023"
+                  },
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "name": "campaignId",
+                  "default": null,
+                  "doc": "ID of the campaign.."
+                }
+              ]
+            },
+            "name": "campaignDetail",
+            "doc": "Details about the campaign."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "ConnectionData",
+                "namespace": "com.rbinternational.rice.contactcenter.call",
+                "fields": [
+                  {
+                    "type": {
+                      "type": "enum",
+                      "default": "__DEFAULT__",
+                      "name": "CommunicationType",
+                      "namespace": "com.rbinternational.rice.contactcenter.call",
+                      "symbols": [
+                        "__DEFAULT__",
+                        "INBOUND",
+                        "OUTBOUND"
+                      ]
+                    },
+                    "name": "communicationType",
+                    "doc": "Information about the direction of the call:\n             - **INBOUND** These are incoming calls received by a company or organization. They are initiated by customers or clients seeking assistance, support, or information.\n             - **OUTBOUND** Outbound calls are initiated by the company or its representatives. They involve making calls to customers or prospects for various purposes such as sales, marketing, surveys, appointment reminders, or follow-ups."
+                  },
+                  {
+                    "reda": {
+                      "maxLength": 32,
+                      "example": "P1M"
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "duration",
+                    "default": null,
+                    "doc": "The duration of the connection. ISO 8601 duration format."
+                  },
+                  {
+                    "reda": {
+                      "maxLength": 32,
+                      "example": "P1M"
+                    },
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "talkTime",
+                    "default": null,
+                    "doc": "The duration of the connection. ISO 8601 duration format."
+                  },
+                  {
+                    "reda": {
+                      "example": 1
+                    },
+                    "type": [
+                      "null",
+                      "int"
+                    ],
+                    "name": "attemptNumber",
+                    "default": null,
+                    "doc": "Number of the current attemp of the call."
+                  },
+                  {
+                    "reda": {
+                      "example": 3
+                    },
+                    "type": [
+                      "null",
+                      "int"
+                    ],
+                    "name": "maxAllowedAttemptsNumber",
+                    "default": null,
+                    "doc": "Total number of the allowed attemps of the call. Once this limit is reached there will be no more automated calls."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "enum",
+                        "default": "__DEFAULT__",
+                        "name": "Status",
+                        "namespace": "com.rbinternational.rice.contactcenter.call",
+                        "symbols": [
+                          "__DEFAULT__",
+                          "SUCCESS",
+                          "FAILED",
+                          "BUSY",
+                          "REJECTED",
+                          "USER_NOT_LOGGED",
+                          "ERROR",
+                          "UNREACHABLE",
+                          "PENDING",
+                          "INVALID_NUMBER",
+                          "ANSWERING_MACHINE",
+                          "NOT_ENOUGH_AGENTS",
+                          "AGENT_REJECT",
+                          "SHORT",
+                          "DO_NOT_CALL",
+                          "NO_ANSWER"
+                        ]
+                      }
+                    ],
+                    "name": "status",
+                    "default": null,
+                    "doc": "Status of the call:\n            - **SUCCESS** the connection was established.\n            - **FAILED** there was problem with a call.\n            - **NO_ANSWER** the call was not answered."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerified",
+                    "default": null,
+                    "doc": "The verification status of the customer."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedByAgent",
+                    "default": null,
+                    "doc": "The verification status of the customer by agent."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedByIVR",
+                    "default": null,
+                    "doc": "The verification status of the customer by IVR."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedBySMS",
+                    "default": null,
+                    "doc": "The verification status of the customer by SMS."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedByEmail",
+                    "default": null,
+                    "doc": "The verification status of the customer by email."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedByCall",
+                    "default": null,
+                    "doc": "The verification status of the customer by call."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedByChat",
+                    "default": null,
+                    "doc": "The verification status of the customer by chat."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedByVideo",
+                    "default": null,
+                    "doc": "The verification status of the customer by video."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedBySocialMedia",
+                    "default": null,
+                    "doc": "The verification status of the customer by social media."
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "boolean"
+                    ],
+                    "name": "isCustomerVerifiedByOther",
+                    "default": null,
+                    "doc": "The verification status of the customer by other."
+                  },
+                  {
+                    "type": {
+                      "type": "long",
+                      "logicalType": "timestamp-millis"
+                    },
+                    "name": "startDateTime",
+                    "doc": "Time when the call started."
+                  },
+                  {
+                    "type": {
+                      "type": "long",
+                      "logicalType": "timestamp-millis"
+                    },
+                    "name": "endDateTime",
+                    "doc": "Time when the call ended."
+                  }
+                ],
+                "doc": "Detailed data about a phone call and related objects."
+              }
+            ],
+            "name": "connectionData",
+            "default": null,
+            "doc": "Detailed data about a phone call and related objects."
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ],
+  "doc": "Call event"
+}

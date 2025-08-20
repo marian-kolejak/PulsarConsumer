@@ -1,0 +1,472 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "investments",
+    "businessSubdomain": "otherTransaction",
+    "topicVersion": "1",
+    "topicName": "*.investments.otherTransaction.V1",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-07-22T10:12:26+00:00",
+    "eventNames": [
+      "INVESTMENT_OTHER_TRANSACTION_CREATED",
+      "INVESTMENT_OTHER_TRANSACTION_UPDATED",
+      "INVESTMENT_OTHER_TRANSACTION_DELETED"
+    ],
+    "defaultEventName": "INVESTMENT_OTHER_TRANSACTION_CREATED",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "-"
+  },
+  "name": "OtherTransaction",
+  "namespace": "com.rbinternational.rice.investments.otherTransaction",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "OtherTransactionMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.investments.otherTransaction",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "INVESTMENT_OTHER_TRANSACTION_CREATED",
+                "INVESTMENT_OTHER_TRANSACTION_UPDATED",
+                "INVESTMENT_OTHER_TRANSACTION_DELETED"
+              ],
+              "default": "INVESTMENT_OTHER_TRANSACTION_CREATED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "OtherTransactionPayload",
+        "namespace": "com.rbinternational.rice.investments.otherTransaction",
+        "fields": [
+          {
+            "type": "string",
+            "name": "transactionId",
+            "doc": "Transaction identifier. Example: POSTSC2319300001.1"
+          },
+          {
+            "type": "int",
+            "name": "recCurrNo",
+            "doc": "Serial number of the transaction record version. Example: 1"
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "StatusEnum",
+              "namespace": "com.rbinternational.rice.investments.otherTransaction",
+              "symbols": [
+                "AUTHORIZED",
+                "CANCEL",
+                "__DEFAULT__"
+              ]
+            },
+            "name": "status",
+            "doc": "Transaction status. Example: AUTHORIZED"
+          },
+          {
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            },
+            "name": "lastChange",
+            "doc": "Date and time of the last change of the transaction record "
+          },
+          {
+            "type": {
+              "type": "int",
+              "logicalType": "date"
+            },
+            "name": "tradeDate",
+            "doc": "Date of trade closure (YYYYMMDD)."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "time"
+              }
+            ],
+            "name": "tradeTime",
+            "default": null,
+            "doc": "Time of closing the deal"
+          },
+          {
+            "type": {
+              "type": "int",
+              "logicalType": "date"
+            },
+            "name": "valueDate",
+            "doc": "Transaction posting date."
+          },
+          {
+            "type": "string",
+            "name": "isin",
+            "doc": "ISIN - security identifier. Example: AT1234567890"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "securityId",
+            "default": null,
+            "doc": "Internal security ID in T24 (SMID). Example: 000518-585"
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "PriceTypeType",
+              "namespace": "com.rbinternational.rice.investments.otherTransaction",
+              "symbols": [
+                "__DEFAULT__",
+                "UNIT",
+                "NOMINAL"
+              ]
+            },
+            "name": "priceType",
+            "doc": "PriceType UNIT  - price is defined in absolute value of particular currency (i.e. 56.78 USD), it is used for share type Securities. PriceType NOMINAL- price is defined in percentage (i.e. 99.95 %), it is used for bond type Securities."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "tradeCcy",
+            "default": null,
+            "doc": "Transaction currency. Example: USD"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "depository",
+            "default": null,
+            "doc": "Depository ID within T24. Example: 99000005"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "stockExchange",
+            "default": null,
+            "doc": "Business / Exchange ID - MIC code. Example: XVIE"
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "TransTypeEnum",
+              "namespace": "com.rbinternational.rice.investments.otherTransaction",
+              "symbols": [
+                "NOSPEC",
+                "BY",
+                "CL",
+                "DK",
+                "EM",
+                "FR",
+                "FS",
+                "NP",
+                "PF",
+                "PO",
+                "PR",
+                "PS",
+                "RV",
+                "SL",
+                "TC",
+                "US",
+                "__DEFAULT__"
+              ]
+            },
+            "name": "transType",
+            "doc": "Transaction type (business reason/purpose). Values: NOSPEC - Not specified, BY - BUY, CL - NULOVANIE POZICII, DK - PRECHOD Z DOVODU DEDICSKEHO KONANIA, EM - OPERACIA EMITENTA, FR - FREE, FS - FUND SWITCH, NP - NEW POSITION, PF - PREVOD CP S FIN. VYROVNANIM, PO - PUBLIC OFFER, PR - PREVOD CP, PS - PRESUN CP, RV - REINVESTMENT, SL - SALE, TC - TAM POSITION CREATION, US - UNIT SWITCH"
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "DeliveryInstrEnum",
+              "namespace": "com.rbinternational.rice.investments.otherTransaction",
+              "symbols": [
+                "DAP",
+                "FOP",
+                "FRE",
+                "__DEFAULT__"
+              ]
+            },
+            "name": "deliveryInstr",
+            "doc": "Delivery terms of the transaction. Values: DAP - Delivery Against Payment, FRE - Free of Payment, FOP - Free Of Payment"
+          },
+          {
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "TradeSide",
+                "namespace": "com.rbinternational.rice.investments.otherTransaction",
+                "fields": [
+                  {
+                    "type": {
+                      "type": "record",
+                      "name": "AccountDetail",
+                      "namespace": "com.rbinternational.rice.investments.otherTransaction",
+                      "fields": [
+                        {
+                          "type": "string",
+                          "name": "custSecAcc",
+                          "doc": "ID of the portfolio to which the record relates. Example: 90794255-40"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "cuAccNo",
+                          "default": null,
+                          "doc": "Client's current account (BBAN format). Example: 2000012166"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "name": "cuAccCcy",
+                          "default": null,
+                          "doc": "Currency of the client's current account. Example: EUR"
+                        }
+                      ]
+                    },
+                    "name": "account"
+                  },
+                  {
+                    "type": {
+                      "type": "record",
+                      "name": "TransactiontDetail",
+                      "namespace": "com.rbinternational.rice.investments.otherTransaction",
+                      "fields": [
+                        {
+                          "type": {
+                            "type": "enum",
+                            "default": "__DEFAULT__",
+                            "name": "SideEnum",
+                            "namespace": "com.rbinternational.rice.investments.otherTransaction",
+                            "symbols": [
+                              "TRI",
+                              "TRO",
+                              "BUY",
+                              "SELL",
+                              "__DEFAULT__"
+                            ]
+                          },
+                          "name": "side",
+                          "doc": "Client transaction code: TRI - Incoming transactions (transfer in), possible use in FRE and FOP TRO - Outgoing transactions (transfer out), possible use in FRE and FOP BUY - Purchase transaction (without purchase order), possible use in DAP SELL - Sales transactions (without orders), possible use in DAP. Example: TRI"
+                        },
+                        {
+                          "type": "double",
+                          "name": "nominal",
+                          "doc": "Client's transaction face value. Example: 200"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "name": "price",
+                          "default": null,
+                          "doc": "Unit price of the client's transaction. Example: 7,92"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "name": "cuIntrAmt",
+                          "default": null,
+                          "doc": "Client's AUV. Example: 12,34"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "name": "cuGrossAccr",
+                          "default": null,
+                          "doc": "Gross trade volume from client's AUV. Example: 1596,34"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "name": "cuCommission",
+                          "default": null,
+                          "doc": "Basic transaction fee for the client. Example: 10,12"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "name": "cuTax",
+                          "default": null,
+                          "doc": "Amount of financial transaction tax. Example: 0,12"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "name": "cuFgnFee",
+                          "default": null,
+                          "doc": "Third-party fee (broker fee). Example: 0,23"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "name": "cuFxTrade",
+                          "default": null,
+                          "doc": "Exchange rate used for the client's trade (trade currency vs. current account currency). Example: 1,123456"
+                        },
+                        {
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "name": "cuFxFee",
+                          "default": null,
+                          "doc": "Exchange rate used for the client's fee (trade currency vs. current account currency). Example: 1,112233"
+                        }
+                      ]
+                    },
+                    "name": "transaction"
+                  }
+                ]
+              }
+            },
+            "name": "sides"
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}

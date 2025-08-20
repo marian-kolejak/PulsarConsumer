@@ -1,0 +1,708 @@
+{
+    "type": "record",
+    "reda": {
+        "businessDomain": "crm",
+        "businessSubdomain": "lead",
+        "topicVersion": "4",
+        "topicName": "*.crm.lead.V4",
+        "responsibleTeam": "RICE-EDA",
+        "responsibleOwner": "RICE-EDA",
+        "responsibleEmail": "rice-support@rbinternational.com",
+        "created": "2025-07-04T08:11:41+00:00",
+        "eventNames": [
+            "LEAD_CREATED",
+            "LEAD_UPDATED",
+            "LEAD_DELETED"
+        ],
+        "defaultEventName": "LEAD_UPDATED",
+        "lastChangedSchemaVersion": "1.0.0",
+        "riceApiLink": "ocrm-leads/v2.0::GET/ocrm/v2/leads/{leadId}"
+    },
+    "name": "Lead",
+    "namespace": "com.rbinternational.rice.crm.lead",
+    "fields": [
+        {
+            "name": "metadata",
+            "type": {
+                "name": "LeadMetadata",
+                "doc": "Metadata model that must be part of every event intended for group integration.",
+                "type": "record",
+                "namespace": "com.rbinternational.rice.crm.lead",
+                "fields": [
+                    {
+                        "name": "eventId",
+                        "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+                        "type": "string"
+                    },
+                    {
+                        "name": "eventName",
+                        "doc": "Name of the event according to group event taxonomies.",
+                        "type": {
+                            "name": "EventName",
+                            "type": "enum",
+                            "symbols": [
+                                "LEAD_CREATED",
+                                "LEAD_UPDATED",
+                                "LEAD_DELETED"
+                            ],
+                            "default": "LEAD_UPDATED"
+                        }
+                    },
+                    {
+                        "name": "eventOwner",
+                        "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+                        "type": "string"
+                    },
+                    {
+                        "name": "sourceUnit",
+                        "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+                        "type": "string"
+                    },
+                    {
+                        "name": "sourceApplication",
+                        "type": "string"
+                    },
+                    {
+                        "name": "eventCreatedAt",
+                        "doc": "Timestamp of event creation in GMT time zone",
+                        "type": {
+                            "type": "long",
+                            "logicalType": "timestamp-millis"
+                        }
+                    },
+                    {
+                        "name": "eventTimezoneOffset",
+                        "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+                        "type": "string"
+                    },
+                    {
+                        "name": "traceId",
+                        "doc": "Present if event carries trace id, usually from frontend app",
+                        "type": "string"
+                    },
+                    {
+                        "name": "parentTraceId",
+                        "doc": "Present if event was triggered from 'parent' event with trace id",
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "default": null
+                    },
+                    {
+                        "name": "parentEventId",
+                        "doc": "Event id of 'parent' event that triggered this event",
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "default": null
+                    },
+                    {
+                        "name": "schemaVersion",
+                        "doc": "schema version of the event",
+                        "type": "string",
+                        "default": "1.0.0"
+                    },
+                    {
+                        "name": "changedFields",
+                        "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+                        "type": [
+                            "null",
+                            {
+                                "type": "array",
+                                "items": "string"
+                            }
+                        ],
+                        "default": null
+                    },
+                    {
+                        "name": "version",
+                        "doc": "Version of the entity, lower value means older version.",
+                        "type": [
+                            "null",
+                            "long"
+                        ],
+                        "default": null
+                    },
+                    {
+                        "name": "triggeredByCustomer",
+                        "doc": "Customer which triggered the change that leads to this event.",
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "default": null
+                    },
+                    {
+                        "name": "triggeredByEmployee",
+                        "doc": "Employee which triggered the change that leads to this event.",
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "default": null
+                    }
+                ]
+            }
+        },
+        {
+            "type": {
+                "type": "record",
+                "name": "LeadPayload",
+                "namespace": "com.rbinternational.rice.crm.lead",
+                "fields": [
+                    {
+                        "reda": {
+                            "maxLength": 50
+                        },
+                        "type": "string",
+                        "name": "leadId",
+                        "doc": "Unique identifier of the lead."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            {
+                                "type": "record",
+                                "name": "PartyRole",
+                                "namespace": "com.rbinternational.rice.crm.common",
+                                "fields": [
+                                    {
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ],
+                                        "name": "partyId",
+                                        "default": null,
+                                        "doc": "The unique identifier from the origination system."
+                                    },
+                                    {
+                                        "type": {
+                                            "type": "enum",
+                                            "default": "__DEFAULT__",
+                                            "name": "PartyMasterSystem",
+                                            "namespace": "com.rbinternational.rice.crm.common",
+                                            "symbols": [
+                                                "EXPONEA",
+                                                "LOANEE",
+                                                "SUBJECT_REGISTER",
+                                                "PROSPECT_REGISTER",
+                                                "__DEFAULT__"
+                                            ],
+                                            "doc": "Enum values for party master system."
+                                        },
+                                        "name": "partyMasterSystem"
+                                    },
+                                    {
+                                        "type": {
+                                            "type": "enum",
+                                            "default": "__DEFAULT__",
+                                            "name": "PartyRoleType",
+                                            "namespace": "com.rbinternational.rice.crm.common",
+                                            "symbols": [
+                                                "PROSPECT",
+                                                "CUSTOMER",
+                                                "__DEFAULT__"
+                                            ],
+                                            "doc": "Enum values for party role."
+                                        },
+                                        "name": "partyRoleType"
+                                    },
+                                    {
+                                        "type": {
+                                            "type": "record",
+                                            "name": "Party",
+                                            "namespace": "com.rbinternational.rice.crm.common",
+                                            "fields": [
+                                                {
+                                                    "type": [
+                                                        "null",
+                                                        "string"
+                                                    ],
+                                                    "name": "firstName",
+                                                    "default": null,
+                                                    "doc": "A party's first name."
+                                                },
+                                                {
+                                                    "type": [
+                                                        "null",
+                                                        "string"
+                                                    ],
+                                                    "name": "lastName",
+                                                    "default": null,
+                                                    "doc": "A party's last name."
+                                                },
+                                                {
+                                                    "type": [
+                                                        "null",
+                                                        "string"
+                                                    ],
+                                                    "name": "personalId",
+                                                    "default": null,
+                                                    "doc": "Personal ID of the party."
+                                                },
+                                                {
+                                                    "type": [
+                                                        "null",
+                                                        "string"
+                                                    ],
+                                                    "name": "fullName",
+                                                    "default": null,
+                                                    "doc": "Full name of the legal entity."
+                                                },
+                                                {
+                                                    "type": [
+                                                        "null",
+                                                        "string"
+                                                    ],
+                                                    "name": "mobilePhoneNumber",
+                                                    "default": null,
+                                                    "doc": "A customer's mobile phone number."
+                                                },
+                                                {
+                                                    "type": [
+                                                        "null",
+                                                        "string"
+                                                    ],
+                                                    "name": "emailAddress",
+                                                    "default": null,
+                                                    "doc": "A customer's email address."
+                                                },
+                                                {
+                                                    "type": {
+                                                        "type": "enum",
+                                                        "default": "__DEFAULT__",
+                                                        "name": "PartyType",
+                                                        "namespace": "com.rbinternational.rice.crm.common",
+                                                        "symbols": [
+                                                            "PERSON",
+                                                            "LEGAL_ENTITY",
+                                                            "__DEFAULT__"
+                                                        ],
+                                                        "doc": "Type of the party."
+                                                    },
+                                                    "name": "partyType"
+                                                },
+                                                {
+                                                    "type": [
+                                                        "null",
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "record",
+                                                                "name": "CustomerInternationalIdentification",
+                                                                "namespace": "com.rbinternational.rice.crm.common",
+                                                                "fields": [
+                                                                    {
+                                                                        "type": {
+                                                                            "type": "enum",
+                                                                            "default": "__DEFAULT__",
+                                                                            "name": "CustomerInternationalIdentificationType",
+                                                                            "namespace": "com.rbinternational.rice.crm.common",
+                                                                            "symbols": [
+                                                                                "PASSPORT_NUMBER",
+                                                                                "PERSONAL_NUMBER",
+                                                                                "IDENTITY_CARD_NUMBER",
+                                                                                "REGISTRATION_NUMBER",
+                                                                                "TAX_ID",
+                                                                                "__DEFAULT__"
+                                                                            ]
+                                                                        },
+                                                                        "name": "type",
+                                                                        "doc": "Type of the identification."
+                                                                    },
+                                                                    {
+                                                                        "type": "string",
+                                                                        "name": "value",
+                                                                        "doc": "Value of the identification."
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "name": "internationalIdentifications",
+                                                    "default": null,
+                                                    "doc": "List of international identifications for the party."
+                                                }
+                                            ],
+                                            "doc": "Details of the party."
+                                        },
+                                        "name": "party"
+                                    }
+                                ],
+                                "doc": "Details of the party role."
+                            }
+                        ],
+                        "name": "partyRole",
+                        "default": null,
+                        "doc": "Information about an owner of the lead, meaning who is assigned to it."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "record",
+                                    "name": "ExternalIds",
+                                    "namespace": "com.rbinternational.rice.crm.lead",
+                                    "fields": [
+                                        {
+                                            "type": [
+                                                "null",
+                                                {
+                                                    "type": "enum",
+                                                    "default": "__DEFAULT__",
+                                                    "name": "IssuingSystem",
+                                                    "namespace": "com.rbinternational.rice.crm.lead",
+                                                    "symbols": [
+                                                        "UNICA",
+                                                        "EXPONEA",
+                                                        "LOANEE",
+                                                        "__DEFAULT__"
+                                                    ],
+                                                    "doc": "Name of the external system which assigned the identifier and issued the object"
+                                                }
+                                            ],
+                                            "name": "issuingSystem",
+                                            "default": null
+                                        },
+                                        {
+                                            "type": [
+                                                "null",
+                                                "string"
+                                            ],
+                                            "name": "externalId",
+                                            "default": null,
+                                            "doc": "Identifier assigned by an external system."
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "name": "externalIds",
+                        "default": null,
+                        "doc": "Identifiers assigned by an external systems."
+                    },
+                    {
+                        "type": {
+                            "type": "enum",
+                            "default": "NEW",
+                            "name": "LeadStatus",
+                            "namespace": "com.rbinternational.rice.crm.lead",
+                            "symbols": [
+                                "NEW",
+                                "IN_PROGRESS",
+                                "CONTRACTING",
+                                "LOST",
+                                "CONVERTED"
+                            ],
+                            "doc": "A status of the lead. Possible values are: - **NEW** - The lead is new and has not been contacted yet. - **IN_PROGRESS** - The lead has been contacted and is being actively pursued. - **CONTRACTING** - The validation of the lead is in progress. - **CONVERTED** - The customer is ready to buy, the lead is converted into an opportunity. - **LOST** - The customer is not willing to buy or doesn't meet criteria and is no longer a potential customer."
+                        },
+                        "name": "status",
+                        "doc": "A status of the lead."
+                    },
+                    {
+                        "type": {
+                            "type": "enum",
+                            "default": "COLD",
+                            "name": "LeadRating",
+                            "namespace": "com.rbinternational.rice.crm.lead",
+                            "symbols": [
+                                "HOT",
+                                "COLD",
+                                "WARM"
+                            ]
+                        },
+                        "name": "rating",
+                        "doc": "Classification of a lead on how close it is to buy a product. - **HOT** - a motivated and time-sensitive buyer. - **WARM** - a buyer in need and interested in the product. - **COLD** - a buyer with no clue about the brand."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "name": "content",
+                        "default": null,
+                        "doc": "A lead content in the form of Base64-encoded characters. Can contain any type of the content; pictures, columns, etc."
+                    },
+                    {
+                        "reda": {
+                            "maxLength": 128
+                        },
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "name": "contentType",
+                        "default": null,
+                        "doc": "All types of possible documents content types. If given content type is not supported, HTTP 415 should be returned. All possible values should be compliant with the RFC2046 MIME Media Types https://www.iana.org/assignments/media-types/media-types.xhtml."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            {
+                                "type": "record",
+                                "name": "Owner",
+                                "namespace": "com.rbinternational.rice.crm.common",
+                                "fields": [
+                                    {
+                                        "type": {
+                                            "type": "enum",
+                                            "default": "__DEFAULT__",
+                                            "name": "OwnerType",
+                                            "namespace": "com.rbinternational.rice.crm.common",
+                                            "symbols": [
+                                                "USER",
+                                                "GROUP",
+                                                "__DEFAULT__"
+                                            ]
+                                        },
+                                        "name": "ownerType",
+                                        "doc": "Type of the owner."
+                                    },
+                                    {
+                                        "reda": {
+                                            "maxLength": 256,
+                                            "pattern": "^[a-zA-Z0-9.!#$%&*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+                                        },
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ],
+                                        "name": "email",
+                                        "default": null,
+                                        "doc": "An email address of the user who owns the task if ownerType is USER."
+                                    },
+                                    {
+                                        "reda": {
+                                            "maxLength": 256
+                                        },
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ],
+                                        "name": "userId",
+                                        "default": null,
+                                        "doc": "Employee ID of the user who owns the task if ownerType is USER."
+                                    },
+                                    {
+                                        "reda": {
+                                            "maxLength": 512
+                                        },
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ],
+                                        "name": "queueName",
+                                        "default": null,
+                                        "doc": "Queue name of the group if ownerType is GROUP."
+                                    },
+                                    {
+                                        "reda": {
+                                            "maxLength": 512
+                                        },
+                                        "type": [
+                                            "null",
+                                            "string"
+                                        ],
+                                        "name": "queueId",
+                                        "default": null,
+                                        "doc": "Queue ID of the group if ownerType is GROUP."
+                                    }
+                                ],
+                                "doc": "Information about an owner of the entity, meaning who is assigned to it."
+                            }
+                        ],
+                        "name": "owner",
+                        "default": null,
+                        "doc": "Information about an owner of the lead, meaning who is assigned to it."
+                    },
+                    {
+                        "reda": {
+                            "maxLength": 32000
+                        },
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "name": "description",
+                        "default": null,
+                        "doc": "A Lead's description."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            {
+                                "type": "record",
+                                "name": "PotentialValueAmount",
+                                "namespace": "com.rbinternational.rice.crm.lead",
+                                "fields": [
+                                    {
+                                        "reda": {
+                                            "pattern": "[A-Z]{3}"
+                                        },
+                                        "type": "string",
+                                        "name": "currency",
+                                        "doc": "ISO 4217 Alpha 3 currency code."
+                                    },
+                                    {
+                                        "reda": {
+                                            "pattern": "-?[0-9]{1,14}(\\.[0-9]{1,3})?"
+                                        },
+                                        "type": "string",
+                                        "name": "amount",
+                                        "doc": "The amount given with fractional digits, where fractions must be compliant to the currency definition. Up to 14 significant figures. Negative amounts are signed by minus. The decimal separator is a dot."
+                                    }
+                                ],
+                                "doc": "A potential value of the lead."
+                            }
+                        ],
+                        "name": "potentialValue",
+                        "default": null,
+                        "doc": "A potential value of the lead."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            {
+                                "type": "enum",
+                                "default": "OTHER",
+                                "name": "LeadSource",
+                                "namespace": "com.rbinternational.rice.crm.lead",
+                                "symbols": [
+                                    "EXPONEA",
+                                    "UNICA",
+                                    "MANUAL",
+                                    "ONLINE_PROCESS",
+                                    "CBS",
+                                    "OTHER"
+                                ],
+                                "doc": "Information about the source of the lead. A channel where the lead was captured. Possible values: - **OTHER** - The lead imported from other than listed below systems. - **EXPONEA** - The lead imported from Exponea. - **UNICA** - The lead imported from Unica. - **MANUAL** - The lead manually registered. - **ONLINE_PROCESS** - The lead captured from an online process, e.g. iKes. - **CBS** - The lead captured from Core Banking System (CBS)."
+                            }
+                        ],
+                        "name": "source",
+                        "default": null,
+                        "doc": "Information about the source of the lead. A channel where the lead was captured. Possible values: - **EXPONEA** - TBD - **UNICA** - TBD - **MANUAL** - TBD - **ONLINE_PROCESS** - TBD - **CBS** - TBD"
+                    },
+                    {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "name": "application",
+                        "default": null,
+                        "doc": "Information about the application where the lead was captured."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "name": "applicationStep",
+                        "default": null,
+                        "doc": "A step in the application process."
+                    },
+                    {
+                        "reda": {
+                            "maxLength": 256
+                        },
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "name": "externalProductCode",
+                        "default": null,
+                        "doc": "Field on Product Object in Salesforce (Product Code External needs to be marked as ExternalID)."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            {
+                                "type": "enum",
+                                "default": "OTHER",
+                                "name": "LeadType",
+                                "namespace": "com.rbinternational.rice.crm.lead",
+                                "symbols": [
+                                    "STUCK_IN_THE_SALES_PROCESS",
+                                    "STUCK_IN_THE_CAMPAIGN",
+                                    "WEB_ACTIVITY",
+                                    "FACEBOOK",
+                                    "CALL_ME_GENERIC",
+                                    "CALL_ME_EMAIL",
+                                    "CALL_ME_BANNER",
+                                    "CALL_ME_WEB",
+                                    "PRODUCT_CANCEL",
+                                    "EXTERNAL",
+                                    "CAMPAIGN",
+                                    "OTHER"
+                                ]
+                            }
+                        ],
+                        "name": "type",
+                        "default": null,
+                        "doc": "The lead type describes the origin of the lead. Possible values are: - **STUCK_IN_THE_SALES_PROCESS** - The customer stuck in the sales process and might need some assistance to finish. - **STUCK_IN_THE_CAMPAIGN** - The customer responded but stuck in the marketing campaign. - **WEB_ACTIVITY** - The customer's web activity suggests his interest in some product. - **FACEBOOK** - The customer's Facebook activity suggests his interest in some product. - **CALL_ME_EMAIL** - The customer followed the link embeded in email. - **CALL_ME_BANNER** - The customer followed the advertisement banner. - **CALL_ME_WEB** - The customer followed link embeded in a web page. - **PRODUCT_CANCEL** - The customer requested product canceleation. - **EXTERNAL** - The lead acquired from external source. - **CAMPAIGN** - The customer responded to marketing campaign. - **OTHER** - Other type of lead."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            {
+                                "type": "int",
+                                "logicalType": "date"
+                            }
+                        ],
+                        "name": "dueDate",
+                        "default": null,
+                        "doc": "A Lead's due date."
+                    },
+                    {
+                        "reda": {
+                            "maxLength": 50
+                        },
+                        "type": [
+                            "null",
+                            "string"
+                        ],
+                        "name": "convertedOpportunityId",
+                        "default": null,
+                        "doc": "Identifier of the opportunity created by conversion of the Lead."
+                    },
+                    {
+                        "type": [
+                            "null",
+                            {
+                                "type": "enum",
+                                "default": "OTHER_REASON",
+                                "name": "LeadLostReason",
+                                "namespace": "com.rbinternational.rice.crm.lead",
+                                "symbols": [
+                                    "LOST",
+                                    "WRONG_NUMBER",
+                                    "NOT_CONTACTED",
+                                    "NOT_INTERESTED",
+                                    "NOT_INTERESTED_NOW_MAYBE_LATER",
+                                    "UNQUALIFIED",
+                                    "SERVICE_REQUEST_ONLY",
+                                    "MOVED_TO_CALL_CENTER",
+                                    "MOVED_TO_BRANCH",
+                                    "MOVED_TO_ONLINE_CHANNELS",
+                                    "RECENT_CONSULTATION",
+                                    "LOST_DUE_GDPR_CUSTOMER_ARCHIVING",
+                                    "OTHER_REASON",
+                                    "EXPIRED",
+                                    "DUE_TO_CAMPAIGN_OFFER_INACTIVATION"
+                                ],
+                                "doc": "Describes the cause of losing the lead. Possible values are: - **WRONG_NUMBER**: Wrong phone number provided. - **NOT_CONTACTED**: The lead was not contacted. - **NOT_INTERESTED**: The lead is not interested. - **NOT_INTERESTED_NOW**: The lead is not interested now but might be later. - **UNQUALIFIED**: The lead is unqualified. - **SERVICE_REQUEST_ONLY**: The lead requested service only. - **MOVED_TO_CALL_CENTER**: The lead was moved to the call center. - **MOVED_TO_BRANCH**: The lead was moved to the branch. - **MOVED_TO_ONLINE_CHANNELS**: The lead was moved to online channels. - **RECENT_CONSULTATION**: There was a recent consultation with the lead. - **LOST_DUE_TO_GDPR_CUSTOMER_ARCHIVING**: The lead was lost due to GDPR customer archiving. - **OTHER_REASON**: Another reason for lead loss. - **EXPIRED**: The lead has expired. - **LOST**: The lead has been lost."
+                            }
+                        ],
+                        "name": "leadLostReason",
+                        "default": null,
+                        "doc": "Describes the cause of losing the lead."
+                    }
+                ]
+            },
+            "name": "payload"
+        }
+    ]
+}

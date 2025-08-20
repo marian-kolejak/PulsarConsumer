@@ -1,0 +1,294 @@
+{
+    "messages": [{
+            "metadata": {
+                "eventId": "0ad29ca6-f7ba-4da0-be05-f69900abb75e",
+                "eventName": "LEAD_UPDATED",
+                "eventOwner": "TBSK",
+                "sourceUnit": "TBSK",
+                "sourceApplication": "OCRM",
+                "eventCreatedAt": 1754385778194,
+                "eventTimezoneOffset": "+02:00",
+                "traceId": "0ad29ca6-f7ba-4da0-be05-f69900abb75e",
+                "parentTraceId": null,
+                "parentEventId": null,
+                "schemaVersion": "1.0.22",
+                "changedFields": ["ConvertedOpportunityId__c"],
+                "version": 1754385778194,
+                "triggeredByCustomer": null,
+                "triggeredByEmployee": null
+            },
+            "payload": {
+                "leadId": "00Q9Z00000XXFGcUAP",
+                "partyRole": {
+                    "partyId": "4866429967442",
+                    "partyMasterSystem": "SUBJECT_REGISTER",
+                    "partyRoleType": "CUSTOMER",
+                    "party": {
+                        "firstName": "Ema",
+                        "lastName": "Hajdinová",
+                        "personalId": null,
+                        "fullName": null,
+                        "mobilePhoneNumber": null,
+                        "emailAddress": null,
+                        "partyType": "PERSON",
+                        "internationalIdentifications": null
+                    }
+                },
+                "externalIds": null,
+                "status": "CONVERTED",
+                "rating": "HOT",
+                "content": null,
+                "contentType": null,
+                "owner": {
+                    "ownerType": "USER",
+                    "email": "marian_kolejak_external@tatrabanka.sk",
+                    "userId": "TE075067",
+                    "queueName": null,
+                    "queueId": null
+                },
+                "description": null,
+                "potentialValue": null,
+                "source": null,
+                "application": null,
+                "applicationStep": null,
+                "externalProductCode": "M_TVU",
+                "type": null,
+                "dueDate": null,
+                "convertedOpportunityId": "0069Z00000Ps7EDQAZ",
+                "leadLostReason": null
+            }
+        }, {
+            "metadata": {
+                "eventId": "c1381ec5-d6db-46ba-9cf1-50c60f8d11bc",
+                "eventName": "LEAD_UPDATED",
+                "eventOwner": "TBSK",
+                "sourceUnit": "TBSK",
+                "sourceApplication": "OCRM",
+                "eventCreatedAt": 1754385776962,
+                "eventTimezoneOffset": "+02:00",
+                "traceId": "c1381ec5-d6db-46ba-9cf1-50c60f8d11bc",
+                "parentTraceId": null,
+                "parentEventId": null,
+                "schemaVersion": "1.0.22",
+                "changedFields": ["Status"],
+                "version": 1754385776962,
+                "triggeredByCustomer": null,
+                "triggeredByEmployee": null
+            },
+            "payload": {
+                "leadId": "00Q9Z00000XXFGcUAP",
+                "partyRole": {
+                    "partyId": "4866429967442",
+                    "partyMasterSystem": "SUBJECT_REGISTER",
+                    "partyRoleType": "CUSTOMER",
+                    "party": {
+                        "firstName": "Ema",
+                        "lastName": "Hajdinová",
+                        "personalId": null,
+                        "fullName": null,
+                        "mobilePhoneNumber": null,
+                        "emailAddress": null,
+                        "partyType": "PERSON",
+                        "internationalIdentifications": null
+                    }
+                },
+                "externalIds": null,
+                "status": "CONVERTED",
+                "rating": "HOT",
+                "content": null,
+                "contentType": null,
+                "owner": {
+                    "ownerType": "USER",
+                    "email": "marian_kolejak_external@tatrabanka.sk",
+                    "userId": "TE075067",
+                    "queueName": null,
+                    "queueId": null
+                },
+                "description": null,
+                "potentialValue": null,
+                "source": null,
+                "application": null,
+                "applicationStep": null,
+                "externalProductCode": "M_TVU",
+                "type": null,
+                "dueDate": null,
+                "convertedOpportunityId": null,
+                "leadLostReason": null
+            }
+        }, {
+            "metadata": {
+                "eventId": "79d8212a-8acd-428a-af48-02e251491e75",
+                "eventName": "LEAD_CREATED",
+                "eventOwner": "TBSK",
+                "sourceUnit": "TBSK",
+                "sourceApplication": "OCRM",
+                "eventCreatedAt": 1754394414903,
+                "eventTimezoneOffset": "+02:00",
+                "traceId": "79d8212a-8acd-428a-af48-02e251491e75",
+                "parentTraceId": null,
+                "parentEventId": null,
+                "schemaVersion": "1.0.22",
+                "changedFields": null,
+                "version": 1754394414903,
+                "triggeredByCustomer": null,
+                "triggeredByEmployee": null
+            },
+            "payload": {
+                "leadId": "00Q9Z00000XcTduUAF",
+                "partyRole": {
+                    "partyId": "4866429967442",
+                    "partyMasterSystem": "SUBJECT_REGISTER",
+                    "partyRoleType": "CUSTOMER",
+                    "party": {
+                        "firstName": "Ema",
+                        "lastName": "Hajdinová",
+                        "personalId": null,
+                        "fullName": null,
+                        "mobilePhoneNumber": null,
+                        "emailAddress": null,
+                        "partyType": "PERSON",
+                        "internationalIdentifications": null
+                    }
+                },
+                "externalIds": null,
+                "status": "NEW",
+                "rating": "HOT",
+                "content": null,
+                "contentType": null,
+                "owner": {
+                    "ownerType": "USER",
+                    "email": "marian_kolejak_external@tatrabanka.sk",
+                    "userId": null,
+                    "queueName": null,
+                    "queueId": null
+                },
+                "description": null,
+                "potentialValue": null,
+                "source": null,
+                "application": null,
+                "applicationStep": null,
+                "externalProductCode": "M_TVU",
+                "type": null,
+                "dueDate": null,
+                "convertedOpportunityId": null,
+                "leadLostReason": null
+            }
+        }, {
+            "metadata": {
+                "eventId": "e4226848-813e-483d-850f-390e5b063f43",
+                "eventName": "LEAD_UPDATED",
+                "eventOwner": "TBSK",
+                "sourceUnit": "TBSK",
+                "sourceApplication": "OCRM",
+                "eventCreatedAt": 1754394699202,
+                "eventTimezoneOffset": "+02:00",
+                "traceId": "e4226848-813e-483d-850f-390e5b063f43",
+                "parentTraceId": null,
+                "parentEventId": null,
+                "schemaVersion": "1.0.22",
+                "changedFields": ["ConvertedOpportunityId__c"],
+                "version": 1754394699203,
+                "triggeredByCustomer": null,
+                "triggeredByEmployee": null
+            },
+            "payload": {
+                "leadId": "00Q9Z00000XcTduUAF",
+                "partyRole": {
+                    "partyId": "4866429967442",
+                    "partyMasterSystem": "SUBJECT_REGISTER",
+                    "partyRoleType": "CUSTOMER",
+                    "party": {
+                        "firstName": "Ema",
+                        "lastName": "Hajdinová",
+                        "personalId": null,
+                        "fullName": null,
+                        "mobilePhoneNumber": null,
+                        "emailAddress": null,
+                        "partyType": "PERSON",
+                        "internationalIdentifications": null
+                    }
+                },
+                "externalIds": null,
+                "status": "CONVERTED",
+                "rating": "HOT",
+                "content": null,
+                "contentType": null,
+                "owner": {
+                    "ownerType": "USER",
+                    "email": "marian_kolejak_external@tatrabanka.sk",
+                    "userId": null,
+                    "queueName": null,
+                    "queueId": null
+                },
+                "description": null,
+                "potentialValue": null,
+                "source": null,
+                "application": null,
+                "applicationStep": null,
+                "externalProductCode": "M_TVU",
+                "type": null,
+                "dueDate": null,
+                "convertedOpportunityId": "0069Z00000PsHFMQA3",
+                "leadLostReason": null
+            }
+        }, {
+            "metadata": {
+                "eventId": "ecb20bfd-4e66-46c4-b783-4c93e820d056",
+                "eventName": "LEAD_UPDATED",
+                "eventOwner": "TBSK",
+                "sourceUnit": "TBSK",
+                "sourceApplication": "OCRM",
+                "eventCreatedAt": 1754394698419,
+                "eventTimezoneOffset": "+02:00",
+                "traceId": "ecb20bfd-4e66-46c4-b783-4c93e820d056",
+                "parentTraceId": null,
+                "parentEventId": null,
+                "schemaVersion": "1.0.22",
+                "changedFields": ["Status"],
+                "version": 1754394698420,
+                "triggeredByCustomer": null,
+                "triggeredByEmployee": null
+            },
+            "payload": {
+                "leadId": "00Q9Z00000XcTduUAF",
+                "partyRole": {
+                    "partyId": "4866429967442",
+                    "partyMasterSystem": "SUBJECT_REGISTER",
+                    "partyRoleType": "CUSTOMER",
+                    "party": {
+                        "firstName": "Ema",
+                        "lastName": "Hajdinová",
+                        "personalId": null,
+                        "fullName": null,
+                        "mobilePhoneNumber": null,
+                        "emailAddress": null,
+                        "partyType": "PERSON",
+                        "internationalIdentifications": null
+                    }
+                },
+                "externalIds": null,
+                "status": "CONVERTED",
+                "rating": "HOT",
+                "content": null,
+                "contentType": null,
+                "owner": {
+                    "ownerType": "USER",
+                    "email": "marian_kolejak_external@tatrabanka.sk",
+                    "userId": null,
+                    "queueName": null,
+                    "queueId": null
+                },
+                "description": null,
+                "potentialValue": null,
+                "source": null,
+                "application": null,
+                "applicationStep": null,
+                "externalProductCode": "M_TVU",
+                "type": null,
+                "dueDate": null,
+                "convertedOpportunityId": null,
+                "leadLostReason": null
+            }
+        }
+    ]
+}

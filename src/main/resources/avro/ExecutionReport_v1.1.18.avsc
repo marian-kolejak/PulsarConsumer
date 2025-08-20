@@ -1,0 +1,384 @@
+{
+  "type": "record",
+  "reda": {
+    "businessDomain": "investments",
+    "businessSubdomain": "executionReport",
+    "topicVersion": "2",
+    "topicName": "*.investments.executionReport.V2",
+    "responsibleTeam": "RICE-EDA",
+    "responsibleOwner": "RICE-EDA",
+    "responsibleEmail": "rice-support@rbinternational.com",
+    "created": "2025-07-22T10:12:26+00:00",
+    "eventNames": [
+      "ORDER_EXECUTED",
+      "ORDER_CANCEL_REJECTED"
+    ],
+    "defaultEventName": "ORDER_EXECUTED",
+    "lastChangedSchemaVersion": "1.0.0",
+    "riceApiLink": "-"
+  },
+  "name": "ExecutionReport",
+  "namespace": "com.rbinternational.rice.investments.executionReport",
+  "fields": [
+    {
+      "name": "metadata",
+      "type": {
+        "name": "ExecutionReportMetadata",
+        "doc": "Metadata model that must be part of every event intended for group integration.",
+        "type": "record",
+        "namespace": "com.rbinternational.rice.investments.executionReport",
+        "fields": [
+          {
+            "name": "eventId",
+            "doc": "Unique ID if the event within NWU. For ordering purposes it should have a sequence as part of value.",
+            "type": "string"
+          },
+          {
+            "name": "eventName",
+            "doc": "Name of the event according to group event taxonomies.",
+            "type": {
+              "name": "EventName",
+              "type": "enum",
+              "symbols": [
+                "ORDER_EXECUTED",
+                "ORDER_CANCEL_REJECTED"
+              ],
+              "default": "ORDER_EXECUTED"
+            }
+          },
+          {
+            "name": "eventOwner",
+            "doc": "NWU designation that owns the data in this event. e.g. if data is produced from RBRO, owner is RBRO. If RPC produces data from RBRO tenant, owner is RBRO",
+            "type": "string"
+          },
+          {
+            "name": "sourceUnit",
+            "doc": "NWU unit producing this event - If RBRO is producing events to group integration layer it will be RBRO. If RPC is producing events from RBRO tenant then it will be RPC.",
+            "type": "string"
+          },
+          {
+            "name": "sourceApplication",
+            "type": "string"
+          },
+          {
+            "name": "eventCreatedAt",
+            "doc": "Timestamp of event creation in GMT time zone",
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            }
+          },
+          {
+            "name": "eventTimezoneOffset",
+            "doc": "Time zone offset between GMT and producer zone in UTC offset. Format: [+|-][hh]:[mm] (one of the formats defined in ISO 8601 for time zones). Examples: +01:00, -07:00, +00:00",
+            "type": "string"
+          },
+          {
+            "name": "traceId",
+            "doc": "Present if event carries trace id, usually from frontend app",
+            "type": "string"
+          },
+          {
+            "name": "parentTraceId",
+            "doc": "Present if event was triggered from 'parent' event with trace id",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "parentEventId",
+            "doc": "Event id of 'parent' event that triggered this event",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "schemaVersion",
+            "doc": "schema version of the event",
+            "type": "string",
+            "default": "1.0.0"
+          },
+          {
+            "name": "changedFields",
+            "doc": "Optional array of changed fields for the update event. Contains the list of JsonPaths of the payload attributes changed compared to the previous version of the entity.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ],
+            "default": null
+          },
+          {
+            "name": "version",
+            "doc": "Version of the entity, lower value means older version.",
+            "type": [
+              "null",
+              "long"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByCustomer",
+            "doc": "Customer which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "triggeredByEmployee",
+            "doc": "Employee which triggered the change that leads to this event.",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "type": "record",
+        "name": "ExecutionReportPayload",
+        "namespace": "com.rbinternational.rice.investments.executionReport",
+        "fields": [
+          {
+            "type": "string",
+            "name": "orderID",
+            "doc": "Unique identifier for Order as assigned by NWU (e.g. TB SK)\nUnique identifier for Order as assigned by NWU (e.g. TB SK)\n"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "cancOrderID",
+            "default": null,
+            "doc": "Unique identifier for Cancel request as assigned by NWU. Only for ExecType = CANCEL_REJECTED."
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "execID",
+            "default": null,
+            "doc": "Unique identifier of execution report message"
+          },
+          {
+            "type": {
+              "type": "enum",
+              "default": "__DEFAULT__",
+              "name": "ExecTypeEnum",
+              "namespace": "com.rbinternational.rice.investments.executionReport",
+              "symbols": [
+                "__DEFAULT__",
+                "NEW",
+                "REJECTED",
+                "PARTIAL_FILL",
+                "FILL",
+                "EXPIRED",
+                "CANCELED",
+                "CANCELED_PARTIAL_FILL",
+                "EXPIRED_PARTIAL_FILL",
+                "CANCEL_REJECTED"
+              ]
+            },
+            "name": "execType",
+            "doc": "Execution report type\n\nNote: CANCEL_REJECTED does not change order status, notifies about rejection of order cancel request"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "ctpyOrderID",
+            "default": null,
+            "doc": "Unique identifier for Order as assigned by broker (e.g. RBI)"
+          },
+          {
+            "type": {
+              "type": "long",
+              "logicalType": "timestamp-millis"
+            },
+            "name": "execDateTime",
+            "doc": "Time of execution (last change date time)"
+          },
+          {
+            "type": [
+              "null",
+              "string"
+            ],
+            "name": "rejectReason",
+            "default": null,
+            "doc": "String constants for REJECTED: BROKER_OPTION, UNKNOWN_SYMBOL, EXCHANGE_CLOSED ...\n\nString constants for CANCEL_REJECTED: TOO_LATE_CANCEL, UNKNOWN_ORDER ..."
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "int",
+                "logicalType": "date"
+              }
+            ],
+            "name": "expiryDate",
+            "default": null,
+            "doc": "Date of order expiration. For ExecType = EXPIRED or EXPIRED_PARTIAL_FILL\n"
+          },
+          {
+            "type": {
+              "type": "record",
+              "name": "OrderDetail",
+              "namespace": "com.rbinternational.rice.investments.executionReport",
+              "fields": [
+                {
+                  "type": "string",
+                  "name": "isin",
+                  "doc": "Security identifier"
+                },
+                {
+                  "type": {
+                    "type": "enum",
+                    "default": "__DEFAULT__",
+                    "name": "PriceTypeType",
+                    "namespace": "com.rbinternational.rice.investments.executionReport",
+                    "symbols": [
+                      "__DEFAULT__",
+                      "UNIT",
+                      "NOMINAL"
+                    ]
+                  },
+                  "name": "priceType",
+                  "doc": "PriceType UNIT - price is defined in absolute value of particular currency (i.e. 56.78 USD), it is used for share type Securities. PriceType NOMINAL- price is defined in percentage (i.e. 99.95 %), it is used for bond type Securities."
+                },
+                {
+                  "type": {
+                    "type": "enum",
+                    "default": "__DEFAULT__",
+                    "name": "OrderSideEnum",
+                    "namespace": "com.rbinternational.rice.investments.executionReport",
+                    "symbols": [
+                      "__DEFAULT__",
+                      "BUY",
+                      "SELL"
+                    ]
+                  },
+                  "name": "side",
+                  "doc": "Order direction"
+                },
+                {
+                  "type": "double",
+                  "name": "orderQty",
+                  "doc": "Number of shares / nominal ordered"
+                },
+                {
+                  "type": [
+                    "null",
+                    "double"
+                  ],
+                  "name": "remainQty",
+                  "default": null,
+                  "doc": "Remaining quantity of order"
+                },
+                {
+                  "type": [
+                    "null",
+                    "double"
+                  ],
+                  "name": "cumQty",
+                  "default": null,
+                  "doc": "Filled quantity of order"
+                }
+              ],
+              "doc": "Basic attributes of the order"
+            },
+            "name": "order",
+            "doc": "Basic attributes of the order"
+          },
+          {
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "FillDetail",
+                "namespace": "com.rbinternational.rice.investments.executionReport",
+                "fields": [
+                  {
+                    "type": "string",
+                    "name": "transactionID",
+                    "doc": "Unique transaction identifier as assigned by NWU"
+                  },
+                  {
+                    "type": {
+                      "type": "int",
+                      "logicalType": "date"
+                    },
+                    "name": "tradeDate",
+                    "doc": "Trade date"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      {
+                        "type": "int",
+                        "logicalType": "time-millis"
+                      }
+                    ],
+                    "name": "tradeTime",
+                    "default": null,
+                    "doc": "Trade time"
+                  },
+                  {
+                    "type": {
+                      "type": "int",
+                      "logicalType": "date"
+                    },
+                    "name": "valueDate",
+                    "doc": "Value date"
+                  },
+                  {
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "name": "stockExch",
+                    "default": null,
+                    "doc": "Market (stock exchange) used to help identify a security. MIC codes"
+                  },
+                  {
+                    "type": "double",
+                    "name": "execQty",
+                    "doc": "Quantity of securities bought/sold on this fill"
+                  },
+                  {
+                    "type": "double",
+                    "name": "execPrice",
+                    "doc": "Price of this fill"
+                  },
+                  {
+                    "type": "string",
+                    "name": "priceCCY",
+                    "doc": "Currency used for price"
+                  }
+                ],
+                "doc": "Order fill details. Only for ExecType = PARTIAL.FILL / FILL"
+              }
+            ],
+            "name": "fill",
+            "default": null,
+            "doc": "Order fill details. Only for ExecType = PARTIAL.FILL / FILL"
+          }
+        ]
+      },
+      "name": "payload"
+    }
+  ]
+}
