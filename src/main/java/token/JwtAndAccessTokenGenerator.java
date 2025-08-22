@@ -43,6 +43,9 @@ public class JwtAndAccessTokenGenerator {
     private static final String PROP_JWK_RESOURCE = "JWK_RESOURCE";
 
     static Properties props = PropertyLoader.load("env.properties");
+    static {
+        log.debug("🔑 Loaded properties: {}", props);
+    }
     static String tokenEndpoint = props.getProperty(PROP_TOKEN_ENDPOINT);
     static String audience = props.getProperty(PROP_AUDIENCE);
     static String subject = props.getProperty(PROP_SUBJECT);
